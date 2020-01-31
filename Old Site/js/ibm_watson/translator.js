@@ -17,11 +17,13 @@
             pass it to the watson api function
             replace the current dom elements text with the response from the watson api
 
+    Working Solution ---
+
 */
 
 const selector = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p']
-const originalText = {}
-const translatedText = {}
+const originalText = []
+const translatedText = []
 
 // Loop over every selector in the list
 for (let i = 0; i < selector.length; i++){
@@ -31,6 +33,16 @@ for (let i = 0; i < selector.length; i++){
     currentCollection = document.getElementsByTagName(currentSelector);
 
     console.log("current selector ", currentSelector)
+    console.log(currentCollection)
+    // console.log(Array.from(currentCollection)[0])
 
+    // Set the current collection (HTMLCollection) to an array list
+    const currentCollectionArray = Array.from(currentCollection);
+
+    // Loop over the currentCollectionArray
+    for (let i = 0; i < currentCollectionArray.length; i++){
+        console.log(currentCollection[i].innerHTML)
+    }
     
+
 }
