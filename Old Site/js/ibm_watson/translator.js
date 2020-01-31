@@ -8,9 +8,11 @@
     Possible solution ---
     Create a list of possible selectors
 
-    for each possible selector
-        get all html elements
-            for each element, store its content in an temporary array
-
+    loop over each possible selector
+        for each item in the HTMLCollection
+            add it's index & text content to an temp array
+        for each item in the temp array
+            pass it to the watson api function
+            replace the current dom elements text with the response from the watson api
 
 */
