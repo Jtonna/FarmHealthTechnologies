@@ -27,22 +27,28 @@ const translatedText = []
 
 // Loop over every selector in the list
 for (let i = 0; i < selector.length; i++){
-
     // Set the current selector to a variable as well as the HTMLCollection
     currentSelector = selector[i]
     currentCollection = document.getElementsByTagName(currentSelector);
 
+    // Console Log's to see the data im working with
+    console.log(" ")
     console.log("current selector ", currentSelector)
-    console.log(currentCollection)
-    // console.log(Array.from(currentCollection)[0])
+    console.log("current collection ", currentCollection)
 
     // Set the current collection (HTMLCollection) to an array list
     const currentCollectionArray = Array.from(currentCollection);
 
     // Loop over the currentCollectionArray
     for (let i = 0; i < currentCollectionArray.length; i++){
-        console.log(currentCollection[i].innerHTML)
-    }
-    
+        console.log(currentCollectionArray[i].innerHTML)
 
+        // Pass the text to be translated to the translator function
+        translator(currentCollectionArray[i].innerHTML)
+    }
+}
+
+function translator(textToBeTranslated){
+    console.log("**Translating ", textToBeTranslated)
+    console.log("   **Putting the original text in the originaltext array")
 }
