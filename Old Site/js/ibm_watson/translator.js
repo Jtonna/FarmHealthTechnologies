@@ -24,6 +24,9 @@
 const selector = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p']
 const originalText = []
 const translatedText = []
+const textData = {}
+
+console.log(textData)
 
 // Loop over every selector in the list
 for (let i = 0; i < selector.length; i++){
@@ -43,12 +46,12 @@ for (let i = 0; i < selector.length; i++){
     for (let i = 0; i < currentCollectionArray.length; i++){
         console.log(currentCollectionArray[i].innerHTML)
 
-        // Pass the text to be translated to the translator function
-        translator(currentCollectionArray[i].innerHTML)
+        // Pass the currentselector, index of the current collection & the text to be translated to the translator function
+        translator(currentSelector, i, currentCollectionArray[i].innerHTML)
     }
 }
 
-function translator(textToBeTranslated){
+function translator(selector, textIndex, textToBeTranslated){
     console.log("**Translating ", textToBeTranslated)
-    console.log("   **Putting the original text in the originaltext array")
+    console.log("   **Putting the original text in the textData array", selector, textIndex, textToBeTranslated)
 }
