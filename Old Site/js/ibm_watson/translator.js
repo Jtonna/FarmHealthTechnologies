@@ -18,5 +18,9 @@ for (var i = 0; i < selector.length; i++){
     // set the currentCollection to an array so we can extract the data we want
     const currentCollectionArray = Array.from(currentCollection);
     print(currentCollectionArray)
-    
+
+    // if theres some key:value(object) pairs in the current collection we want to get that information
+    if (currentCollectionArray.length > 0){
+        print("theres some data here boss")
+    }
 }
