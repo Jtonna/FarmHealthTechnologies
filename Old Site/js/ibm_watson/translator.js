@@ -1,26 +1,36 @@
 const selector = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 const currentLanguage = "english"
-const languageToTranslateTo = "english"
+const languageToTranslateTo = ""
 const textData = {}
-const testingData = {"x":{0:{"english":"Hello World!", "spanish": "Hola mundo!"}}, "y":{0:{"english":"How are you doing today?", "spanish": "Cómo estás hoy?"}, 1:{"english":"one two three", "spanish":"uno dos tres"}}}
+//const testingData = {"x":{0:{"english":"Hello World!", "spanish": "Hola mundo!"}}, "y":{0:{"english":"How are you doing today?", "spanish": "Cómo estás hoy?"}, 1:{"english":"one two three", "spanish":"uno dos tres"}}}
 
 function print(thingToPrint){
     console.log(thingToPrint)
 }
 
 // Loop over every selector
-for (var i = 0; i < selector.length; i++){
-    // Set the current loop number (which is the index) to a variable as well as the value of the current selector
-    const selectorIndex = i
-    const selectorValue = selector[i]
-    // get all of the dom elements with the same selectorValue
-    const currentCollection = document.getElementsByTagName(selectorValue)
-    // set the currentCollection to an array so we can extract the data we want
-    const currentCollectionArray = Array.from(currentCollection);
-    print(currentCollectionArray)
+for (var selector_loop = 0; selector_loop < selector.length; selector_loop++){
 
-    // if theres some key:value(object) pairs in the current collection we want to get that information
-    if (currentCollectionArray.length > 0){
-        print("theres some data here boss")
+    // variable's
+    const theHTMLCollection = document.getElementsByTagName(selector[selector_loop])
+
+    print(`looking for ${selector[selector_loop]}`)
+
+    // checks to see if the length of items in the htmlcollection is greater than 0, prints true or false
+    print(`HTMLCollection > 0 ::: ${theHTMLCollection.length > 0}`)
+
+    // If the html collection is > 0
+    if (theHTMLCollection.length > 0){
+        print(`${theHTMLCollection}`)
+
+        // loop theHtmlCollection.length number of times collection https://developer.mozilla.org/en-US/docs/Web/API/HTMLCollection
+        const collectionItemCount = theHTMLCollection.length;
+        for (var i = 0; collectionItemCount > i; i++){
+            print(theHTMLCollection.item(i).innerText)
+        }
+
+
     }
+
+    print(`\n`)
 }
