@@ -21,12 +21,14 @@
 
 */
 
-const selector = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p']
-const originalText = []
-const translatedText = []
+const selector = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const currentLanguage = "english"
+const languageToTranslateTo = "english"
 const textData = {}
+const testingData = {"x":{0:{"english":"Hello World!", "spanish": "Hola mundo!"}}, "y":{0:{"english":"How are you doing today?", "spanish": "Cómo estás hoy?"}, 1:{"english":"one two three", "spanish":"uno dos tres"}}}
 
-console.log(textData)
+console.log(testingData)
+console.log("textData Object:", textData)
 
 // Loop over every selector in the list
 for (let i = 0; i < selector.length; i++){
@@ -35,9 +37,8 @@ for (let i = 0; i < selector.length; i++){
     currentCollection = document.getElementsByTagName(currentSelector);
 
     // Console Log's to see the data im working with
-    console.log(" ")
-    console.log("current selector ", currentSelector)
-    console.log("current collection ", currentCollection)
+    console.log("--- Current Loop Data for selector: ", currentSelector)
+    console.log("       current collection ", currentCollection)
 
     // Set the current collection (HTMLCollection) to an array list
     const currentCollectionArray = Array.from(currentCollection);
@@ -47,11 +48,22 @@ for (let i = 0; i < selector.length; i++){
         console.log(currentCollectionArray[i].innerHTML)
 
         // Pass the currentselector, index of the current collection & the text to be translated to the translator function
-        translator(currentSelector, i, currentCollectionArray[i].innerHTML)
+        translator(currentSelector, i, languageToTranslateTo, currentCollectionArray[i].innerHTML)
     }
+
+    console.log(" ")
+    console.log(" ")
 }
 
-function translator(selector, textIndex, textToBeTranslated){
-    console.log("**Translating ", textToBeTranslated)
-    console.log("   **Putting the original text in the textData array", selector, textIndex, textToBeTranslated)
+function translator(selector, textIndex, language, textToBeTranslated){
+    console.log("       Translating")
+
+    // at selector add index
+    testingData[selector] = [textIndex]
+
+    // at selector[index] add the language and the text to be translated
+    testingData[selector][textIndex] = {language, textToBeTranslated}
+    
+    console.log(testingData)
 }
+console.log(testingData)
