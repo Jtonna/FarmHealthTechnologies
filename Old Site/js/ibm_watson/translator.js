@@ -31,6 +31,9 @@ for (var selector_loop = 0; selector_loop < selector.length; selector_loop++){
             // {"x":{"0":{"english":"Hello World!"}}}
             tempArrayObj[selector[selector_loop]] =  {[i]:{[originalLanguage]:theHTMLCollection.item(i).innerText}}
 
+            // Add the current peice of data to a temp array holding data for all of the dom elements with the same selector
+            //Object.assign(selectorDataObj,tempArrayObj)
+
             print(`---\ntempArrayObj below`)
             print(tempArrayObj)
 
