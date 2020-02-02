@@ -1,8 +1,7 @@
-const selector = ['p', 'h1', ]//'h2', 'h3', 'h4', 'h5', 'h6']
+const selector = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 const originalLanguage = "english"
 const languageToTranslateTo = ""
 const textData = {}
-const testingData = {"x":{0:{"english":"Hello World!", "spanish": "Hola mundo!"}}}
 
 function print(thingToPrint){
     console.log(thingToPrint)
@@ -33,18 +32,14 @@ for (var selector_loop = 0; selector_loop < selector.length; selector_loop++){
             print(theHTMLCollection.item(i).innerText)
             print(i)
 
-            // add the selector, key, language & information into the temp array
-            // print(`${selector[selector_loop]} ${i} ${originalLanguage} ${theHTMLCollection.item(i).innerText}`) // proof everything can be accessed
-            // tempArrayObj[selector[selector_loop]] = [i]
-            // tempArrayObj[selector[selector_loop]][i] =  {[originalLanguage]:[theHTMLCollection.item(i).innerText]}
-
-            tempArrayObj[selector[selector_loop]] 
-            //tempArrayObj[selector[selector_loop]]
+            // add the selector, key, language & information into the temp array in the following structure
+            // {"x":{"0":{"english":"Hello World!"}}}
+            tempArrayObj[selector[selector_loop]] = [i]
+            tempArrayObj[selector[selector_loop]][i] =  {[originalLanguage]:theHTMLCollection.item(i).innerText}
 
 
             print(`---\ntempArrayObj below`)
             print(tempArrayObj)
-            print(testingData)
 
         }
     print("selector data below")
