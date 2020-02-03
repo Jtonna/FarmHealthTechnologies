@@ -2,6 +2,7 @@
 
 * Plan
 
+TODO 
 If the user doesnt have a translatorState object with a length bigger than 1 in their local storage
     Loop over each dom element looking for a "selector", this should generate an HTMLCollection
         for each item in the HTMLCollection
@@ -12,7 +13,7 @@ If the user doesnt have a translatorState object with a length bigger than 1 in 
     
     Once everything is done trigger the saveTranslatorState function
 
-
+TODO 
 create a addTranslationToState function that takes in 4 variables; selector, index, language & translated text
     if the data we are going to add does NOT already exist in the translatorState Object
         add the data to the translatorState Object in the form of the following data structure
@@ -22,18 +23,18 @@ create a addTranslationToState function that takes in 4 variables; selector, ind
             }
         }
 
-
+TODO
 create a saveTranslatorState function
         pretty simple, just save the translatorState in the local storage
 
-
+TODO
 create a shouldTranslateChecker function that takes in one variable "to_language"
         if to_language is in the translatorState object's list of fully translated languages
             trigger the translateFromLocalStorage function
         else
             trigger and pass the to_language to the startTranslationFunction
 
-
+TODO
 create a startTranslation function that takes in a "to" language; our from will always be english
     loop over the translatorState Object
         for each "selector" in the object
@@ -42,7 +43,7 @@ create a startTranslation function that takes in a "to" language; our from will 
                 pass the phrase & the from & to language to the beginWatsonTranslation function, so it gets translated
                 when the translated phrase is returned pass it to the addTranslationToState Function to be stored
                 
-
+TODO
 create a beginWatsonTranslation function that takes in 3 variables; the from & to language (say english -> spanish) & the test to translate
     if max_attempts is < 10
         pass the from_language, to_language & text to translate to the IBM Watson's Translation API
@@ -55,7 +56,7 @@ create a beginWatsonTranslation function that takes in 3 variables; the from & t
     else
         alert the user theres an error and we cant translate text right now & that they should come back later
 
-
+TODO
 create a translateFromLocalStorage function that takes in one variable "to_language"
         for each "selector"
             and each selectors index in the translatorState object
