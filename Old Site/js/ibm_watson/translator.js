@@ -20,16 +20,29 @@ if (localStorage.getItem("translatorState") === null){
 
     // for each "selector" get all of the dom elements and add them to the temp array obj above
     for (selector_index = 0; selector_index < selector.length; selector_index++){
-        theHtmlCollection = document.getElementsByTagName(selector[selector_index])
-        console.log(theHtmlCollection)
-        // pass each item from the html collection into the tempArrayObject; IF the length is >0 
-        console.log(theHtmlCollection.length)
+        // Create an array from the collection
+        theHtmlCollection = Array.from(document.getElementsByTagName(selector[selector_index]))
+        console.log(theHtmlCollection.length, theHtmlCollection)
+        // If the collection has anything in it
         if (theHtmlCollection.length > 0){
-            console.log("theres data to harvest")
+            // Keep track of how many times for each calls back, & for each index, add the data to the temp array object; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#Examples
+            numCallbackRuns = 0
+            theHtmlCollection.forEach(current_element => {
+                //console.log("selector", selector[selector_index], "// html collection index", numCallbackRuns, current_element.innerText )
+                //tempArrayObject[selector[selector_index]] = {[numCallbackRuns]:{"english":current_element.innerText}}
+                // pass this data to the addTranslationToState Function.
+                // pass this data to the addTranslationToState Function.
+                // pass this data to the addTranslationToState Function.
+                // pass this data to the addTranslationToState Function.
+                // pass this data to the addTranslationToState Function.
+                // pass this data to the addTranslationToState Function.
+                numCallbackRuns++
+            });
         }
         
         console.log("\n")
     }
+    console.log(tempArrayObject)
 }
 
 /*
