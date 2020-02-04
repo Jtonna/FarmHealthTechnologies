@@ -2,44 +2,29 @@ const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 const translatorState = {}
 
 /*
-TODO
-If the user doesnt have a translatorState object with a length bigger than 1 in their local storage
-    Loop over each dom element looking for a "selector", this should generate an HTMLCollection
-        for each item in the HTMLCollection
-            pass that value into the HTMLCollectionTempArray
-
-        for each item in the HTMLCollectionTempArray
-            pass the data from HTMLCollectionTempArray in this style " selector{index{language:phrase}} " to the translatorState Object using the addTranslationToState function
-            
-    Once everything is done trigger the saveTranslatorState function
+    If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
+    We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
 */
 
-if (localStorage.getItem("translatorState") === null){
+if (localStorage.getItem("translatorState") === null) {
 
-    const tempArrayObject = {}
+    const tempArrayObject = []
 
     // for each "selector" get all of the dom elements and add them to the temp array obj above
-    for (selector_index = 0; selector_index < selector.length; selector_index++){
+    for (selector_index = 0; selector_index < selector.length; selector_index++) {
         // Create an array from the collection
         theHtmlCollection = Array.from(document.getElementsByTagName(selector[selector_index]))
         console.log(theHtmlCollection.length, theHtmlCollection)
         // If the collection has anything in it
-        if (theHtmlCollection.length > 0){
-            // Keep track of how many times for each calls back, & for each index, add the data to the temp array object; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#Examples
+        if (theHtmlCollection.length > 0) {
+            // Keep track of how many times the forEach calls back(run/loops), & for each run pass the selector, index, language & inner text to the addTranslationToState function; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#Examples
             numCallbackRuns = 0
             theHtmlCollection.forEach(current_element => {
-                //console.log("selector", selector[selector_index], "// html collection index", numCallbackRuns, current_element.innerText )
-                //tempArrayObject[selector[selector_index]] = {[numCallbackRuns]:{"english":current_element.innerText}}
-                // pass this data to the addTranslationToState Function.
-                // pass this data to the addTranslationToState Function.
-                // pass this data to the addTranslationToState Function.
-                // pass this data to the addTranslationToState Function.
-                // pass this data to the addTranslationToState Function.
-                // pass this data to the addTranslationToState Function.
+                addTranslationToState(selector[selector_index], numCallbackRuns, "english", current_element.innerText)
                 numCallbackRuns++
             });
         }
-        
+
         console.log("\n")
     }
     console.log(tempArrayObject)
@@ -57,8 +42,10 @@ create a addTranslationToState function that takes in 4 variables; selector, ind
             }
         }
 */
-function addTranslationToState(x,y,z) {
+function addTranslationToState(a, b, c, d) {
     console.log("passed some data to addTranslationToState")
+    console.log(a, b, c, d)
+
 }
 
 
