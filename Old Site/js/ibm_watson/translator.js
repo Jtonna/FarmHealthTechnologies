@@ -22,6 +22,13 @@ if (localStorage.getItem("translatorState") === null){
     for (selector_index = 0; selector_index < selector.length; selector_index++){
         theHtmlCollection = document.getElementsByTagName(selector[selector_index])
         console.log(theHtmlCollection)
+        // pass each item from the html collection into the tempArrayObject; IF the length is >0 
+        console.log(theHtmlCollection.length)
+        if (theHtmlCollection.length > 0){
+            console.log("theres data to harvest")
+        }
+        
+        console.log("\n")
     }
 }
 
