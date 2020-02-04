@@ -9,27 +9,19 @@ If the user doesnt have a translatorState object with a length bigger than 1 in 
             pass that value into the HTMLCollectionTempArray
 
         for each item in the HTMLCollectionTempArray
-            add the data from HTMLCollectionTempArray in this style " selector{index{language:phrase}} " to the translatorState Object using the addTranslationToState function
+            pass the data from HTMLCollectionTempArray in this style " selector{index{language:phrase}} " to the translatorState Object using the addTranslationToState function
             
     Once everything is done trigger the saveTranslatorState function
 */
 
 if (localStorage.getItem("translatorState") === null){
-    const selectorLoopData = {}
-    console.log("local storage is null, looping over items\n")
 
-    // Loop over the selector array
-    for (i = 0; i < selector.length; i++){
+    const tempArrayObject = {}
 
-        // create an array from an HTMLCollection
-        const HTMLCollectionTempArray = Array.from(document.getElementsByTagName(selector[i]))
-
-        console.log("Looking for", selector[i], HTMLCollectionTempArray)
-        HTMLCollectionTempArray.forEach(function(value,key){
-            console.log("selector:", selector[i], key, ":", value.innerHTML)
-        })
-
-        console.log("\n")
+    // for each "selector" get all of the dom elements and add them to the temp array obj above
+    for (selector_index = 0; selector_index < selector.length; selector_index++){
+        theHtmlCollection = document.getElementsByTagName(selector[selector_index])
+        console.log(theHtmlCollection)
     }
 }
 
@@ -45,7 +37,9 @@ create a addTranslationToState function that takes in 4 variables; selector, ind
             }
         }
 */
-
+function addTranslationToState(x,y,z) {
+    console.log("passed some data to addTranslationToState")
+}
 
 
 /*
