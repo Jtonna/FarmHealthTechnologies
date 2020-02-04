@@ -1,20 +1,45 @@
 const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 const translatorState = {}
+const fakeState = {
+    domTranslations :{
+        p:{
+            0:[{"english":"lol", "spanish":"lol but in spanish"}],
+            1:[{"english":"yah yeet"}]
+        },
+        h1:{
+            0:[{"english":"lol", "spanish":"lol but in spanish"}],
+            1:[{"english":"yah yeet"}]
+        },
+    },
+}
+const testAssign = { english:"lol", merged:{} }
+const merger = { spanish: "no"}
+const merger2 = { russian: "cyka"}
+console.log(testAssign)
+Object.assign(testAssign['merged'], merger)
+Object.assign(testAssign['merged'], merger2)
+console.log(testAssign)
+//console.log(fakeState.domTranslations.p[0][0].spanish)
+//console.log(fakeState["domTranslations"]["p"][0][0]['english'])
+
 
 /*
-    If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
-    We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
+addTranslation : function(selector,index,language,text){
+        this.selector[index]
+    }
 */
 
-if (localStorage.getItem("translatorState") === null) {
+// If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
+// We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
 
-    const tempArrayObject = []
+
+if (localStorage.getItem("translatorState") === null) {
 
     // for each "selector" get all of the dom elements and add them to the temp array obj above
     for (selector_index = 0; selector_index < selector.length; selector_index++) {
         // Create an array from the collection
         theHtmlCollection = Array.from(document.getElementsByTagName(selector[selector_index]))
-        console.log(theHtmlCollection.length, theHtmlCollection)
+
         // If the collection has anything in it
         if (theHtmlCollection.length > 0) {
             // Keep track of how many times the forEach calls back(run/loops), & for each run pass the selector, index, language & inner text to the addTranslationToState function; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#Examples
@@ -24,10 +49,7 @@ if (localStorage.getItem("translatorState") === null) {
                 numCallbackRuns++
             });
         }
-
-        console.log("\n")
     }
-    console.log(tempArrayObject)
 }
 
 /*
@@ -42,12 +64,25 @@ create a addTranslationToState function that takes in 4 variables; selector, ind
             }
         }
 */
-function addTranslationToState(a, b, c, d) {
+function addTranslationToState(selector, index, language, text) {
     console.log("passed some data to addTranslationToState")
-    console.log(a, b, c, d)
-
+    console.log(selector, index, language, text)
+    let tempTranslationState = {
+        translations:{
+            [selector]:{
+                [index]:{
+                    0:{
+                        [language]:text
+                    }
+                }
+            }
+        }
+    }
+    console.log(tempTranslationState)
+    console.log("\n")
+    
 }
-
+console.log(translatorState)
 
 /*
 
