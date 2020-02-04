@@ -1,33 +1,25 @@
-const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-const translatorState = {}
-const fakeState = {
-    domTranslations :{
+const selector = ['p',]// 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const translatorState = {
+    domTranslations:{
         p:{
-            0:[{"english":"lol", "spanish":"lol but in spanish"}],
-            1:[{"english":"yah yeet"}]
-        },
-        h1:{
-            0:[{"english":"lol", "spanish":"lol but in spanish"}],
-            1:[{"english":"yah yeet"}]
-        },
-    },
-}
-const testAssign = { english:"lol", merged:{} }
-const merger = { spanish: "no"}
-const merger2 = { russian: "cyka"}
-console.log(testAssign)
-Object.assign(testAssign['merged'], merger)
-Object.assign(testAssign['merged'], merger2)
-console.log(testAssign)
-//console.log(fakeState.domTranslations.p[0][0].spanish)
-//console.log(fakeState["domTranslations"]["p"][0][0]['english'])
-
-
-/*
-addTranslation : function(selector,index,language,text){
-        this.selector[index]
+            0:{jlang:"Lol", elang:"olo"},
+            1:{jlang:"siudog"}
+        }
     }
-*/
+}
+console.log("Translator state levels")
+console.log(translatorState)
+console.log(translatorState.domTranslations)
+console.log(translatorState.domTranslations.p)
+console.log(translatorState.domTranslations.p[0])
+console.log(translatorState.domTranslations.p[0].jlang,"\n\n")
+
+console.log("attempting mutation")
+const randomArray = {schweg:"lit"}
+Object.assign(translatorState.domTranslations.p[0], randomArray)
+console.log(translatorState.domTranslations.p[0],"\n\n")
+
+console.log("\n\n\n\n\n")
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
 // We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
@@ -66,19 +58,9 @@ create a addTranslationToState function that takes in 4 variables; selector, ind
 */
 function addTranslationToState(selector, index, language, text) {
     console.log("passed some data to addTranslationToState")
-    console.log(selector, index, language, text)
-    let tempTranslationState = {
-        translations:{
-            [selector]:{
-                [index]:{
-                    0:{
-                        [language]:text
-                    }
-                }
-            }
-        }
-    }
-    console.log(tempTranslationState)
+    console.log("****", selector, index, language, text)
+    const dataToAdd = {[language]:text}
+    Object.assign(translatorState.domTranslations.p[index], dataToAdd)
     console.log("\n")
     
 }
