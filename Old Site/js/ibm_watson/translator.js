@@ -1,5 +1,5 @@
-const translatorState = {}
 const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const translatorState = {}
 
 /*
 TODO
@@ -14,7 +14,24 @@ If the user doesnt have a translatorState object with a length bigger than 1 in 
     Once everything is done trigger the saveTranslatorState function
 */
 
+if (localStorage.getItem("translatorState") === null){
+    const selectorLoopData = {}
+    console.log("local storage is null, looping over items\n")
 
+    // Loop over the selector array
+    for (i = 0; i < selector.length; i++){
+
+        // create an array from an HTMLCollection
+        const HTMLCollectionTempArray = Array.from(document.getElementsByTagName(selector[i]))
+
+        console.log("Looking for", selector[i], HTMLCollectionTempArray)
+        HTMLCollectionTempArray.forEach(function(value,key){
+            console.log("selector:", selector[i], key, ":", value.innerHTML)
+        })
+
+        console.log("\n")
+    }
+}
 
 /*
 
