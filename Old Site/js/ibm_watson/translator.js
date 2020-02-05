@@ -48,8 +48,23 @@ create a addTranslationToState function that takes in 4 variables; selector, ind
 */
 function addTranslationToState(selector, index, language, text) {
 
+    // If the data structure we need doesnt exist, create it
     if(translatorState[selector[index]] === undefined){
         console.log(`selector ${selector} w/ index ${index} not found in the translator state`)
+        const tempObject = {
+            domTranslations:{
+                [selector]:{
+                    [index]:{
+                        
+                    }
+                }
+            }
+        }
+        console.log(tempObject)
+
+        //addTranslationToState(selector, index, language, text)
+    } else {
+
     }
 
     function merger(dataToMerge){
