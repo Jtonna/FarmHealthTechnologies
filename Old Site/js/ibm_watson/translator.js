@@ -12,6 +12,8 @@ const translatorStateExample = {
     }
 }
 
+//console.log(translatorStateExample['domTranslations']['p'][0])
+
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
 // We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
 if (localStorage.getItem("translatorState") === null) {
@@ -47,31 +49,24 @@ create a addTranslationToState function that takes in 4 variables; selector, ind
     
 */
 function addTranslationToState(selector, index, language, text) {
-
-    // If the data structure we need doesnt exist, create it
-    if(translatorState[selector[index]] === undefined){
-        console.log(`selector ${selector} w/ index ${index} not found in the translator state`)
-        const tempObject = {
-            domTranslations:{
-                [selector]:{
-                    [index]:{
-                        
-                    }
-                }
-            }
-        }
-        console.log(tempObject)
-
-        //addTranslationToState(selector, index, language, text)
+    if(translatorState["domTranslations"[selector]] == true){
+        console.log("looks like we can just add the data and not worry about a structure")
     } else {
+        console.log("translatorState[selector] is currently", translatorState[selector])
 
-    }
+        // Check if theres a "domTranslations" object, if not create it
+        if (!translatorState["domTranslations"]){
+            console.log("shit dont exist fam")
+            const tempDataStructure = {domTranslations:{}}
+            Object.assign(translatorState, tempDataStructure)
+        }
 
-    function merger(dataToMerge){
-        console.log("merging data", dataToMerge)
-        Object.assign(translatorState, dataToMerge)
+        // Object.assign(translatorState, tempDataStructure)
     }
+//    if (translatorState)
+console.log("\n")
 }
+
 console.log("\nFinal Translator State\n",translatorState,"\n\n")
 
 /*
