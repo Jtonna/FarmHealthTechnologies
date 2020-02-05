@@ -56,13 +56,14 @@ function addTranslationToState(selector, index, language, text) {
 
     if(translatorState["domTranslations"[selector]] == true){
         console.log("looks like we can just add the data and not worry about a structure")
+        
     } else {
         console.log("translatorState[selector] is currently", translatorState[selector])
         // Check if theres a "domTranslations" object, if not create it
         if (!translatorState["domTranslations"]){
             console.log("shit dont exist fam, lets make it")
             const tempDataStructure = {domTranslations:{}}
-            Object.assign(translatorState, tempDataStructure)
+            helper(translatorState, tempDataStructure)
         }
         
         // if there is not a current "selector" in the data sturcture we need to make one
@@ -74,7 +75,11 @@ function addTranslationToState(selector, index, language, text) {
         }
 
     }
-//    if (translatorState)
+
+    function helper(objectLocation, objectToMerge){
+        console.log("Assigning data to the translatorState", objectToMerge)
+        Object.assign(objectLocation, objectToMerge)
+    }
 console.log("\n")
 }
 
