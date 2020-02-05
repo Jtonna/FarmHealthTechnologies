@@ -1,4 +1,4 @@
-const selector = ['p', 'a', 'h1', ]// 'h2', 'h3', 'h4', 'h5', 'h6']
+const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 const translatorState = {}
 const translatorStateExample = {
     domTranslations:{
@@ -39,13 +39,16 @@ if (localStorage.getItem("translatorState") === null) {
 
 TODO
 create a addTranslationToState function that takes in 4 variables; selector, index, language & text
-    if the current TranslatorState DOES NOT have the selector[index] object we are looking for
-        create a tempObject with the needed data structure
-        pass the tempObject to the merger function
-        recursively call addTranslationToState and pass all variables back in
+    if there is a "translatorState[domTranslations[selector]]"
+        pass the selector, index, language:text to the helper function
     else
-        create a tempObject that contains the language & text
-        pass the tempObject to the merger function
+        check if there is NOT an "domTranslation" in the translatorState
+            create the basic data structure and merge it into the translatorState using the helper function
+        check if there is NOT an "domTranslation[selector]" in the translatorState
+            create the datastructure and merge it into the translatorState using the helper function
+    
+    create a helper function that takes in an variable, which will always be an object
+        using Object.assign, merge the translatorState Object with the Object passed in
     
 */
 function addTranslationToState(selector, index, language, text) {
@@ -70,7 +73,6 @@ function addTranslationToState(selector, index, language, text) {
             Object.assign(translatorState["domTranslations"], tempDataStructure)
         }
 
-        // Object.assign(translatorState, tempDataStructure)
     }
 //    if (translatorState)
 console.log("\n")
