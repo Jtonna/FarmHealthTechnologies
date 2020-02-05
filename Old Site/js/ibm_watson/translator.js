@@ -19,6 +19,7 @@ const randomArray = {schweg:"lit"}
 Object.assign(translatorState.domTranslations.p[0], randomArray)
 console.log(translatorState.domTranslations.p[0],"\n\n")
 
+//console.log(translatorState['domTranslations']['p'][0])
 console.log("\n\n\n\n\n")
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
@@ -59,8 +60,16 @@ create a addTranslationToState function that takes in 4 variables; selector, ind
 function addTranslationToState(selector, index, language, text) {
     console.log("passed some data to addTranslationToState")
     console.log("****", selector, index, language, text)
+    // If the location were looking for doesnt exist, we need to create it first or we will get an error.
+    console.log(selector, index)
+
+    const location = translatorState['domTranslations'][selector][index]
     const dataToAdd = {[language]:text}
-    Object.assign(translatorState.domTranslations.p[index], dataToAdd)
+    // Object.assign(translatorState.domTranslations.p[index], dataToAdd)
+    console.log("Attempting to add", dataToAdd, "to the translatorState Object @ the location", selector, index)
+    Object.assign(location, dataToAdd)
+
+
     console.log("\n")
     
 }
