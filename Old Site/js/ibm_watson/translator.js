@@ -64,7 +64,7 @@ function addTranslationToState(selector, index, language, text) {
             [language]:text
         }
         console.log("******", tempDataStructure)
-        //helper(translatorStateExample["domTranslations"][selector], tempDataStructure)
+        helper(translatorState["domTranslations"][selector], tempDataStructure)
 
     } else {
         console.log("translatorState[selector] is currently", translatorState[selector])
@@ -80,7 +80,7 @@ function addTranslationToState(selector, index, language, text) {
             console.log(`no data structure for ${selector} found, so were making one`)
             const tempDataStructure = {[selector]:{}}
             console.log(tempDataStructure)
-            Object.assign(translatorState["domTranslations"], tempDataStructure)
+            helper(translatorState["domTranslations"], tempDataStructure)
         }
         
     }
