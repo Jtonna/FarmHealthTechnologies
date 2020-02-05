@@ -54,7 +54,9 @@ create a addTranslationToState function that takes in 4 variables; selector, ind
 function addTranslationToState(selector, index, language, text) {
     console.log(`** ${selector} ${index}`)
 
-    if(translatorStateExample["domTranslations"].hasOwnProperty(selector) == true){
+    console.log(translatorState.hasOwnProperty("domTranslations") == true)
+
+    if(translatorState.hasOwnProperty("domTranslations") == true && translatorState["domTranslations"].hasOwnProperty(selector)){
         console.log("looks like we can just add the data and not worry about a structure")
 
         // this data structure should only contain language:text
