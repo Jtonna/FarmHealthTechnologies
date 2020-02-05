@@ -1,31 +1,19 @@
-const selector = ['p',]// 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-const translatorState = {
+const selector = ['p', 'a', 'h1', ]// 'h2', 'h3', 'h4', 'h5', 'h6']
+const translatorState = {}
+const translatorStateExample = {
     domTranslations:{
         p:{
             0:{jlang:"Lol", elang:"olo"},
             1:{jlang:"siudog"}
+        },
+        h1:{
+            0:{english:"hell yeahhhhhhh"}
         }
     }
 }
-console.log("Translator state levels")
-console.log(translatorState)
-console.log(translatorState.domTranslations)
-console.log(translatorState.domTranslations.p)
-console.log(translatorState.domTranslations.p[0])
-console.log(translatorState.domTranslations.p[0].jlang,"\n\n")
-
-console.log("attempting mutation")
-const randomArray = {schweg:"lit"}
-Object.assign(translatorState.domTranslations.p[0], randomArray)
-console.log(translatorState.domTranslations.p[0],"\n\n")
-
-//console.log(translatorState['domTranslations']['p'][0])
-console.log("\n\n\n\n\n")
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
 // We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
-
-
 if (localStorage.getItem("translatorState") === null) {
 
     // for each "selector" get all of the dom elements and add them to the temp array obj above
@@ -48,32 +36,28 @@ if (localStorage.getItem("translatorState") === null) {
 /*
 
 TODO
-create a addTranslationToState function that takes in 4 variables; selector, index, language & translated text
-    if the data we are going to add does NOT already exist in the translatorState Object
-        add the data to the translatorState Object in the form of the following data structure
-        translatorState = {
-            h:{
-                0:{english:"example text", spanish:"ejemplo de texto"}
-            }
-        }
+create a addTranslationToState function that takes in 4 variables; selector, index, language & text
+    if the current TranslatorState DOES NOT have the selector[index] object we are looking for
+        create a tempObject with the needed data structure
+        pass the tempObject to the merger function
+        recursively call addTranslationToState and pass all variables back in
+    else
+        create a tempObject that contains the language & text
+        pass the tempObject to the merger function
+    
 */
 function addTranslationToState(selector, index, language, text) {
-    console.log("passed some data to addTranslationToState")
-    console.log("****", selector, index, language, text)
-    // If the location were looking for doesnt exist, we need to create it first or we will get an error.
-    console.log(selector, index)
 
-    const location = translatorState['domTranslations'][selector][index]
-    const dataToAdd = {[language]:text}
-    // Object.assign(translatorState.domTranslations.p[index], dataToAdd)
-    console.log("Attempting to add", dataToAdd, "to the translatorState Object @ the location", selector, index)
-    Object.assign(location, dataToAdd)
+    if(translatorState[selector[index]] === undefined){
+        console.log(`selector ${selector} w/ index ${index} not found in the translator state`)
+    }
 
-
-    console.log("\n")
-    
+    function merger(dataToMerge){
+        console.log("merging data", dataToMerge)
+        Object.assign(translatorState, dataToMerge)
+    }
 }
-console.log(translatorState)
+console.log("\nFinal Translator State\n",translatorState,"\n\n")
 
 /*
 
