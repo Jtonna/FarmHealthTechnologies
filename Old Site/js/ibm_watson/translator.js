@@ -53,22 +53,20 @@ create a addTranslationToState function that takes in 4 variables; selector, ind
 */
 function addTranslationToState(selector, index, language, text) {
     console.log(`** ${selector} ${index}`)
-
     console.log(translatorState.hasOwnProperty("domTranslations") == true)
-
     if(translatorState.hasOwnProperty("domTranslations") == true && translatorState["domTranslations"].hasOwnProperty(selector)){
         console.log("looks like we can just add the data and not worry about a structure")
 
-        // this data structure should only contain language:text
+        // this data structure should only contain the index:{language:text}, where "index" referes to its position on the dom
         const tempDataStructure = {
-            [language]:text
+            [index]:{[language]:text}
         }
         console.log("******", tempDataStructure)
         helper(translatorState["domTranslations"][selector], tempDataStructure)
 
     } else {
-        console.log("translatorState[selector] is currently", translatorState[selector])
         // Check if theres a "domTranslations" object, if not create it
+        console.log("translatorState[selector] is currently", translatorState[selector])
         if (!translatorState["domTranslations"]){
             console.log("shit dont exist fam, lets make it")
             const tempDataStructure = {domTranslations:{}}
@@ -82,6 +80,11 @@ function addTranslationToState(selector, index, language, text) {
             console.log(tempDataStructure)
             helper(translatorState["domTranslations"], tempDataStructure)
         }
+
+        // since the selector:{index:{language:text}} just passed through, we created space for it to be added, but did not actually add it
+        // we can just recursively pass the data back in to be added
+        console.log(`Just created data structures, now were going to do some recursion for ${selector}/${index}`)
+        addTranslationToState(selector, index, language, text)
         
     }
 
