@@ -88,8 +88,22 @@ create a saveTranslatorState function
         pretty simple, just save the translatorState in the local storage
 */
 
+function saveTranslatorState(){
+    console.log("saving StranslatorState to localStorage")
+    localStorage.setItem("translatorState", JSON.stringify(translatorState))
+}
 
+function getTranslatorState(){
+    console.log("attempting to get item from local storage")
+    //console.log(JSON.parse(localStorage.getItem("translatorState")))
+    const translatorStateFromLocalStorage = JSON.parse(localStorage.getItem("translatorState"))
+    return translatorStateFromLocalStorage
+}
 
+function cls(){
+    console.log("Clearing translatorState from local storage")
+    localStorage.clear("translatorState")
+}
 
 /*
 
