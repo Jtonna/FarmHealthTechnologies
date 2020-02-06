@@ -12,8 +12,6 @@ const translatorStateExample = {
     }
 }
 
-//console.log(translatorStateExample['domTranslations']['p'][0])
-
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
 // We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
 if (localStorage.getItem("translatorState") === null) {
@@ -35,22 +33,8 @@ if (localStorage.getItem("translatorState") === null) {
     }
 }
 
-/*
-
-TODO
-create a addTranslationToState function that takes in 4 variables; selector, index, language & text
-    if there is a "translatorState[domTranslations[selector]]"
-        pass the selector, index, language:text to the helper function
-    else
-        check if there is NOT an "domTranslation" in the translatorState
-            create the basic data structure and merge it into the translatorState using the helper function
-        check if there is NOT an "domTranslation[selector]" in the translatorState
-            create the datastructure and merge it into the translatorState using the helper function
-    
-    create a helper function that takes in an variable, which will always be an object
-        using Object.assign, merge the translatorState Object with the Object passed in
-    
-*/
+// This function just adds information to the translatorState Object, inside of the "domTranslations" object.
+// Its important to note, that the "index" is the location on the dom, & that we are using bracket notation to support non-ascii, unlike dot notaiton
 function addTranslationToState(selector, index, language, text) {
     console.log(`** ${selector} ${index}`)
     console.log(translatorState.hasOwnProperty("domTranslations") == true)
@@ -103,6 +87,7 @@ TODO
 create a saveTranslatorState function
         pretty simple, just save the translatorState in the local storage
 */
+
 
 
 
