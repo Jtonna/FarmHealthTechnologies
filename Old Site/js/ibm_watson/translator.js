@@ -109,7 +109,9 @@ function cls(){
 TODO 
 create a function named translatorSubmit that prevent the page from being reloaded or refreshed on form submission
 */
-
+function translatorSubmit(event){
+    
+}
 
 /*
 TODO
