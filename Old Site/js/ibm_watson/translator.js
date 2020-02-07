@@ -13,7 +13,7 @@ const translatorStateExample = {
 }
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
-// We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
+//     We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
 // If the user does have the object in storage we need to pull it & set it
 if (localStorage.getItem("translatorState") === null) {
 
@@ -34,9 +34,9 @@ if (localStorage.getItem("translatorState") === null) {
     }
 
     // Now that we are finished adding the dom elements to the state we need to save it to localStorage
-    saveTranslatorState()
+    setTranslatorState()
 } else {
-    console.log("Ayeeeeee")
+    console.warn("user has a translator state, so we are going to set it")
     translatorState = getTranslatorState()
 }
 
@@ -86,20 +86,16 @@ function addTranslationToState(selector, index, language, text) {
 console.log("\n")
 }
 
-console.log("\nFinal Translator State\n",translatorState,"\n\n")
+console.log("\nThe Translator State\n",translatorState,"\n\n")
 
-/*
 
-TODO
-create a saveTranslatorState function
-        pretty simple, just save the translatorState in the local storage
-*/
-
-function saveTranslatorState(){
+// Sets the translatorState object to local storage
+function setTranslatorState(){
     console.log("saving StranslatorState to localStorage")
     localStorage.setItem("translatorState", JSON.stringify(translatorState))
 }
 
+// Gets the translatorState object from local storage
 function getTranslatorState(){
     console.log("attempting to get item from local storage")
     console.log("here it is", JSON.parse(localStorage.getItem("translatorState")))
@@ -107,12 +103,12 @@ function getTranslatorState(){
     return translatorStateFromLocalStorage
 }
 
+// Clears the translatorState object from local storage
 function cls(){
     console.log("Clearing translatorState from local storage")
     localStorage.clear("translatorState")
 }
 
-/*
 
 /*
 TODO
