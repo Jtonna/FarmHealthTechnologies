@@ -121,7 +121,7 @@ create a shouldTranslateChecker function to be triggered onClick or onSubmit
 */
 function shouldTranslateChecker(){
     const languageSelected = document.getElementById("translatableLanguages").value
-    console.log("Language Selected:", languageSelected)
+    console.log("Language Requested:", languageSelected)
     // Accesses the last "key" in "domTranslations", which should be a "selector" like "h1", "p", "a"
     const lastSelectorInDomTranslations = Object.keys(translatorState["domTranslations"])[Object.keys(translatorState["domTranslations"]).length-1]
     // Gets the index of the last entry for the "selector", which should be the last dom element added to the object
@@ -129,11 +129,14 @@ function shouldTranslateChecker(){
     // Uses the two above variables to access the last "domTranslations" index's object's keys, which should be a language
     const locationToCheck = Object.keys(translatorState["domTranslations"][lastSelectorInDomTranslations][lastIndexInLastSelector])
 
+    console.log("Languages avaliable:", locationToCheck)
+
     if(locationToCheck.includes(languageSelected)){
-        console.log(`${languageSelected} is there`)
+        console.log(`${languageSelected} is there, we can translate from the translatorState object instead of sending it to watson`)
     } else {
         console.log("looks like we need to send it to watson")
     }
+    console.log("\n")
 }
 
 /*
