@@ -106,12 +106,6 @@ function cls(){
 }
 
 /*
-TODO 
-create a function named translatorSubmit that prevent the page from being reloaded or refreshed on form submission
-*/
-function translatorSubmit(event){
-    
-}
 
 /*
 TODO
@@ -122,7 +116,8 @@ create a shouldTranslateChecker function that takes in one variable "to_language
             trigger and pass the to_language to the startTranslationFunction
 */
 function shouldTranslateChecker(){
-    console.log("clickkk")
+    var languageSelected = document.getElementById("translatableLanguages").value
+    console.log("clicked", languageSelected)
 }
 
 

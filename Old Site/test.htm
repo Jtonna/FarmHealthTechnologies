@@ -8,16 +8,14 @@
 </head>
 <body>
     <nav>
-        <form onSubmit="return false;">
-            <select name="translatableLanguages">
-                <option value="english">english</option>
-                <option value="spanish">spanish</option>
-                <option value="russian">russian</option>
-                <option value="chineese">chineese</option>
-            </select>
-            <button type="submit" onClick="shouldTranslateChecker()"> submit </button>
-        </form>
+       <select name="translatableLanguages" id="translatableLanguages" onChange="shouldTranslateChecker()">
+           <option value="english">english</option>
+           <option value="spanish">spanish</option>
+           <option value="russian">russian</option>
+           <option value="chineese">chineese</option>
+       </select>
     </nav>
+
     <section class="header">
         <div class="title">
             <h1>Hello world!</h1>
