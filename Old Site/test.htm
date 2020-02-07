@@ -8,12 +8,15 @@
 </head>
 <body>
     <nav>
-       <select name="translatableLanguages" id="translatableLanguages" onChange="shouldTranslateChecker()">
-           <option value="english">english</option>
-           <option value="spanish">spanish</option>
-           <option value="russian">russian</option>
-           <option value="chineese">chineese</option>
-       </select>
+        <div class="translator">
+            <select name="translatableLanguages" id="translatableLanguages">
+                <option value="english">english</option>
+                <option value="spanish">spanish</option>
+                <option value="russian">russian</option>
+                <option value="chineese">chineese</option>
+            </select>
+            <button onClick="shouldTranslateChecker()">Translate</button>
+        </div>
     </nav>
 
     <section class="header">

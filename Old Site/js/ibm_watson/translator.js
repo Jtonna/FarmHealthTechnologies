@@ -114,10 +114,13 @@ create a shouldTranslateChecker function that takes in one variable "to_language
             trigger the translateFromLocalStorage function
         else
             trigger and pass the to_language to the startTranslationFunction
+
+create a shouldTranslateChecker function to be triggered onClick or onSubmit
+    grab the dom elements value 
 */
 function shouldTranslateChecker(){
     var languageSelected = document.getElementById("translatableLanguages").value
-    console.log("clicked", languageSelected)
+    console.log("Selected and submitted", languageSelected)
 }
 
 
