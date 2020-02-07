@@ -109,16 +109,7 @@ function cls(){
     localStorage.clear("translatorState")
 }
 
-
-/*
-TODO
-create a shouldTranslateChecker function to be triggered onClick or onSubmit
-    grab the dom elements "languageSelected" value
-    if translatorState object @ the last selector @ the last index contains a translation for the "languageSelected"
-        invoke StartTranslation
-    else (meaning that there are more than likely no translations or possibly partial translations)
-        invoke beginWatsonTranslation
-*/
+// When the user makes a request to translate, we need to see if we should use the API or translate from local storage (if they have been here and translated before)
 function shouldTranslateChecker(){
     const languageSelected = document.getElementById("translatableLanguages").value
     console.log("Language Requested:", languageSelected)
