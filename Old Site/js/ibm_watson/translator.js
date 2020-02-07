@@ -112,15 +112,12 @@ function cls(){
 
 /*
 TODO
-create a shouldTranslateChecker function that takes in one variable "to_language"
-        if to_language is in the translatorState object's list of fully translated languages
-            trigger the translateFromLocalStorage function
-        else
-            trigger and pass the to_language to the startTranslationFunction
-
 create a shouldTranslateChecker function to be triggered onClick or onSubmit
     grab the dom elements "languageSelected" value
-    check 
+    if translatorState object @ the last selector @ the last index contains a translation for the "languageSelected"
+        invoke StartTranslation
+    else (meaning that there are more than likely no translations or possibly partial translations)
+        invoke beginWatsonTranslation
 */
 function shouldTranslateChecker(){
     var languageSelected = document.getElementById("translatableLanguages").value
