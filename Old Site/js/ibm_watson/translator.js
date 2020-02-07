@@ -141,7 +141,23 @@ create a startTranslation function that takes in a "to" language; our from will 
                 pass the phrase & the from & to language to the beginWatsonTranslation function, so it gets translated
                 when the translated phrase is returned pass it to the addTranslationToState Function to be stored
 */
+function startTranslation(toLanguage){
+    // Our base language for all translations will be english
+    const fromLanguage = "english"
+    const selectorsInTranslatorState = Object.keys(translatorState["domTranslations"])
+    console.log("The selectors Avaliable", selectorsInTranslatorState)
 
+    // For each "selector" tag in the translatorState Object
+    for(let i = 0; i < selectorsInTranslatorState.length; i++){
+        console.log("\n")
+        currentSelector = selectorsInTranslatorState[i]
+        console.log("Selector:", currentSelector)
+        currentSelectorsIndexs = Object.keys(translatorState["domTranslations"][currentSelector])
+        console.log("Selector's Index's", currentSelectorsIndexs)
+        
+    }
+}
+startTranslation()
 
 
 /*
