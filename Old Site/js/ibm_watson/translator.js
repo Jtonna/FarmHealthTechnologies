@@ -1,5 +1,5 @@
 const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-const translatorState = {}
+var translatorState = {}
 const translatorStateExample = {
     domTranslations:{
         p:{
@@ -14,6 +14,7 @@ const translatorStateExample = {
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
 // We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
+// If the user does have the object in storage we need to pull it & set it
 if (localStorage.getItem("translatorState") === null) {
 
     // for each "selector" get all of the dom elements and add them to the temp array obj above
@@ -31,6 +32,12 @@ if (localStorage.getItem("translatorState") === null) {
             });
         }
     }
+
+    // Now that we are finished adding the dom elements to the state we need to save it to localStorage
+    saveTranslatorState()
+} else {
+    console.log("Ayeeeeee")
+    translatorState = getTranslatorState()
 }
 
 // This function just adds information to the translatorState Object, inside of the "domTranslations" object.
@@ -95,7 +102,7 @@ function saveTranslatorState(){
 
 function getTranslatorState(){
     console.log("attempting to get item from local storage")
-    //console.log(JSON.parse(localStorage.getItem("translatorState")))
+    console.log("here it is", JSON.parse(localStorage.getItem("translatorState")))
     const translatorStateFromLocalStorage = JSON.parse(localStorage.getItem("translatorState"))
     return translatorStateFromLocalStorage
 }
@@ -116,11 +123,15 @@ create a shouldTranslateChecker function that takes in one variable "to_language
             trigger and pass the to_language to the startTranslationFunction
 
 create a shouldTranslateChecker function to be triggered onClick or onSubmit
-    grab the dom elements value 
+    grab the dom elements "languageSelected" value
+    check 
 */
 function shouldTranslateChecker(){
     var languageSelected = document.getElementById("translatableLanguages").value
     console.log("Selected and submitted", languageSelected)
+
+    const translatorStateFromLocalStorage = getTranslatorState()
+    console.log(translatorStateFromLocalStorage)
 }
 
 
