@@ -201,12 +201,15 @@ const example_response = {
     }],
     "word_count" : 5,
     "character_count" : 26
-  }
+}
 
 function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex, max_attempts){
     console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate}. ${selector} ${selectorIndex}`)
+    const watsonUrl = "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
     if (max_attempts < 10) {
-        return example_response
+        // begin fetch
+        // TODO -- Implement fetch here
+        // end fetch
     } else {
         console.log("The API cannot be reached right now, please try again later")
     }
