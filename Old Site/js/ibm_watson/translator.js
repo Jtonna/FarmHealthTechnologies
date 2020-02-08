@@ -27,7 +27,7 @@ if (localStorage.getItem("translatorState") === null) {
             // Keep track of how many times the forEach calls back(run/loops), & for each run pass the selector, index, language & inner text to the addTranslationToState function; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#Examples
             numCallbackRuns = 0
             theHtmlCollection.forEach(current_element => {
-                addTranslationToState(selector[selector_index], numCallbackRuns, "english", current_element.innerText)
+                addTranslationToState(selector[selector_index], numCallbackRuns, "en", current_element.innerText)
                 numCallbackRuns++
             });
         }
