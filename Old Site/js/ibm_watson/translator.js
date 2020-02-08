@@ -1,4 +1,5 @@
-const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+// const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const selector = ['p','h2']
 var translatorState = {}
 const translatorStateExample = {
     domTranslations:{
@@ -190,7 +191,9 @@ create a beginWatsonTranslation function that takes in 3 variables; the from & t
     else
         alert the user theres an error and we cant translate text right now & that they should come back later
 */
-
+function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate){
+    console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}`)
+}
 
 
 /*
