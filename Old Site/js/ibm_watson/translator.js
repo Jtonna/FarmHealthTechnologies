@@ -1,17 +1,6 @@
 // const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 const selector = ['h2']
 var translatorState = {}
-const translatorStateExample = {
-    domTranslations:{
-        p:{
-            0:{jlang:"Lol", elang:"olo"},
-            1:{jlang:"siudog"}
-        },
-        h1:{
-            0:{english:"hell yeahhhhhhh"}
-        }
-    }
-}
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
 //     We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
@@ -206,13 +195,22 @@ const example_response = {
 function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex, max_attempts){
     console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate}. ${selector} ${selectorIndex}`)
     const watsonUrl = "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
-    if (max_attempts < 10) {
-        // begin fetch
-        // TODO -- Implement fetch here
-        // end fetch
-    } else {
-        console.log("The API cannot be reached right now, please try again later")
-    }
+    const sadlyPublicApiKeyBecauseThisIsntServerSideJS = "apikey:quybgOrr4T1-wJ69rtVJbvGfar1h_GzsRY7ZEUliazU7"
+
+    /*
+    TODO --
+        invoke the function and pass in dummy data and console log it
+        structure the data to send to the api
+        implement fetch & error handeling
+        implement max_attempts after
+    */
+    // if (max_attempts < 10) {
+    //     // begin fetch
+    //     // TODO -- Implement fetch here
+    //     // end fetch
+    // } else {
+    //     console.log("The API cannot be reached right now, please try again later")
+    // }
 
 }
 /*
