@@ -116,15 +116,17 @@ function shouldTranslateChecker(){
     console.log("Language Requested:", languageSelected)
     // Accesses the last "key" in "domTranslations", which should be a "selector" like "h1", "p", "a"
     const lastSelectorInDomTranslations = Object.keys(translatorState["domTranslations"])[Object.keys(translatorState["domTranslations"]).length-1]
+    //console.log(`Last selector ${lastSelectorInDomTranslations}`)
+
     // Gets the index of the last entry for the "selector", which should be the last dom element added to the object
     const lastIndexInLastSelector = Object.keys(lastSelectorInDomTranslations).length
+    //console.log(`Last index in the selector ${lastIndexInLastSelector}`)
+
     // Uses the two above variables to access the last "domTranslations" index's object's keys, which should be a language
-    // TODO - Fix the issue with getting a list of avaliable languages thats already stored
-    const locationToCheck = Object.keys(translatorState["domTranslations"][lastSelectorInDomTranslations])
+    const locationKeysToCheck = Object.keys(translatorState["domTranslations"][lastSelectorInDomTranslations][Object.keys(translatorState["domTranslations"]["h2"]).length-1])
+    //console.log("languages avaliable", locationKeysToCheck)
 
-    console.log("Languages avaliable:", locationToCheck)
-
-    if(locationToCheck.includes(languageSelected)){
+    if(locationKeysToCheck.includes(languageSelected)){
         console.log(`${languageSelected} is there, we can translate from the translatorState object instead of sending it to watson`)
     } else {
         console.log("looks like we need to send it to watson")
@@ -132,6 +134,7 @@ function shouldTranslateChecker(){
     console.log("\n")
 }
 
+shouldTranslateChecker()
 /*
 
 TODO
@@ -175,8 +178,8 @@ function startTranslation(toLanguage){
         console.log("\n")
     }
 }
-console.log("forcing translation to spanish 'es'")
-startTranslation("es")
+//console.log("forcing translation to spanish 'es'")
+//startTranslation("es")
 
 
 /*
