@@ -119,7 +119,8 @@ function shouldTranslateChecker(){
     // Gets the index of the last entry for the "selector", which should be the last dom element added to the object
     const lastIndexInLastSelector = Object.keys(lastSelectorInDomTranslations).length
     // Uses the two above variables to access the last "domTranslations" index's object's keys, which should be a language
-    const locationToCheck = Object.keys(translatorState["domTranslations"][lastSelectorInDomTranslations][lastIndexInLastSelector])
+    // TODO - Fix the issue with getting a list of avaliable languages thats already stored
+    const locationToCheck = Object.keys(translatorState["domTranslations"][lastSelectorInDomTranslations])
 
     console.log("Languages avaliable:", locationToCheck)
 
@@ -171,9 +172,11 @@ function startTranslation(toLanguage){
             // capture the return and pass the Selector, Index, toLanguage & translation into the addTranslationToState function
 
         }
+        console.log("\n")
     }
 }
-startTranslation()
+console.log("forcing translation to spanish 'es'")
+startTranslation("es")
 
 
 /*
@@ -192,7 +195,7 @@ create a beginWatsonTranslation function that takes in 3 variables; the from & t
         alert the user theres an error and we cant translate text right now & that they should come back later
 */
 function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate){
-    console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}`)
+    console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate}`)
 }
 
 
