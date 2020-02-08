@@ -112,8 +112,8 @@ function cls(){
 
 // When the user makes a request to translate, we need to see if we should use the API or translate from local storage (if they have been here and translated before)
 function shouldTranslateChecker(){
-    const languageSelected = document.getElementById("translatableLanguages").value
-    console.log("Language Requested:", languageSelected)
+    const languageUserWants = document.getElementById("translatableLanguages").value
+    console.log("Language Requested:", languageUserWants)
     // Accesses the last "key" in "domTranslations", which should be a "selector" like "h1", "p", "a"
     const lastSelectorInDomTranslations = Object.keys(translatorState["domTranslations"])[Object.keys(translatorState["domTranslations"]).length-1]
     //console.log(`Last selector ${lastSelectorInDomTranslations}`)
@@ -126,15 +126,15 @@ function shouldTranslateChecker(){
     const locationKeysToCheck = Object.keys(translatorState["domTranslations"][lastSelectorInDomTranslations][Object.keys(translatorState["domTranslations"]["h2"]).length-1])
     //console.log("languages avaliable", locationKeysToCheck)
 
-    if(locationKeysToCheck.includes(languageSelected)){
-        console.log(`${languageSelected} is there, we can translate from the translatorState object instead of sending it to watson`)
+    if(locationKeysToCheck.includes(languageUserWants)){
+        console.log(`${languageUserWants} is there, we can translate from the translatorState object instead of sending it to watson`)
     } else {
         console.log("looks like we need to send it to watson")
+        startTranslation(languageUserWants)
     }
     console.log("\n")
 }
 
-shouldTranslateChecker()
 /*
 
 TODO
@@ -172,15 +172,13 @@ function startTranslation(toLanguage){
             console.log(key, value)
             // TODO
             // pass beginWatsonTranslation, fromLanguage, toLanguage, and the text to be translated
+            beginWatsonTranslation(key, toLanguage, value)
             // capture the return and pass the Selector, Index, toLanguage & translation into the addTranslationToState function
 
         }
         console.log("\n")
     }
 }
-//console.log("forcing translation to spanish 'es'")
-//startTranslation("es")
-
 
 /*
 
