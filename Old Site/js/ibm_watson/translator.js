@@ -150,11 +150,26 @@ function startTranslation(toLanguage){
     // For each "selector" tag in the translatorState Object
     for(let i = 0; i < selectorsInTranslatorState.length; i++){
         console.log("\n")
+
         currentSelector = selectorsInTranslatorState[i]
         console.log("Selector:", currentSelector)
+
         currentSelectorsIndexs = Object.keys(translatorState["domTranslations"][currentSelector])
         console.log("Selector's Index's", currentSelectorsIndexs)
-        
+
+        const locationToGetDataFrom = translatorState["domTranslations"][currentSelector]
+        console.log(locationToGetDataFrom)
+
+        // for each "index" we need to get the corrosponding language "key" & text "value"
+        for (let i = 0; i< currentSelectorsIndexs.length; i++){
+            const key = Object.keys(locationToGetDataFrom[i])
+            const value = Object.values(locationToGetDataFrom[i])
+            console.log(key, value)
+            // TODO
+            // pass beginWatsonTranslation, fromLanguage, toLanguage, and the text to be translated
+            // capture the return and pass the Selector, Index, toLanguage & translation into the addTranslationToState function
+
+        }
     }
 }
 startTranslation()
