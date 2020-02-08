@@ -1,5 +1,5 @@
 // const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-const selector = ['p','h2']
+const selector = ['h2']
 var translatorState = {}
 const translatorStateExample = {
     domTranslations:{
@@ -128,6 +128,7 @@ function shouldTranslateChecker(){
 
     if(locationKeysToCheck.includes(languageUserWants)){
         console.log(`${languageUserWants} is there, we can translate from the translatorState object instead of sending it to watson`)
+        // TODO -- Invoke the beginTranslationFromState function and pass in the languageUserWants
     } else {
         console.log("looks like we need to send it to watson")
         startTranslation(languageUserWants)
@@ -156,10 +157,10 @@ function startTranslation(toLanguage){
     for(let i = 0; i < selectorsInTranslatorState.length; i++){
         console.log("\n")
 
-        currentSelector = selectorsInTranslatorState[i]
+        const currentSelector = selectorsInTranslatorState[i]
         console.log("Selector:", currentSelector)
 
-        currentSelectorsIndexs = Object.keys(translatorState["domTranslations"][currentSelector])
+        const currentSelectorsIndexs = Object.keys(translatorState["domTranslations"][currentSelector])
         console.log("Selector's Index's", currentSelectorsIndexs)
 
         const locationToGetDataFrom = translatorState["domTranslations"][currentSelector]
@@ -170,36 +171,47 @@ function startTranslation(toLanguage){
             const key = Object.keys(locationToGetDataFrom[i])
             const value = Object.values(locationToGetDataFrom[i])
             console.log(key, value)
-            // TODO
-            // pass beginWatsonTranslation, fromLanguage, toLanguage, and the text to be translated
-            beginWatsonTranslation(key, toLanguage, value)
-            // capture the return and pass the Selector, Index, toLanguage & translation into the addTranslationToState function
-
+            // pass beginWatsonTranslation, fromLanguage, toLanguage, current selector, selector index & 0 (for max attempts)
+            beginWatsonTranslation(key, toLanguage, value, currentSelector, currentSelectorsIndexs, 0)
         }
         console.log("\n")
     }
+    // TODO invoke translateFromLocalStorage & pass it the "toLanguage"
 }
 
 /*
 
 TODO
-create a beginWatsonTranslation function that takes in 3 variables; the from & to language (say english -> spanish) & the test to translate
+create a beginWatsonTranslation function that takes in 5 variables (fromLang, toLang, textToTranslate, selector, selectorIndex)
     if max_attempts is < 10
         pass the from_language, to_language & text to translate to the IBM Watson's Translation API
         if the response is a time-out error or something along those lines
             +1 max attempts
-            sleep for 1.5 second's or something like that
-            recursively call the beginWatsonTranslation & pass the data back into it with the current value of max_attempts
-        else
-            return the response
+            recursively call the beginWatsonTranslation & pass the data back into it with the current value of max_attempts + 1
+        else (if it was a success)
+            invoke addTranslationToState & pass it the selector, index, toLanguage & the translated text to add at that position
+
     else
         alert the user theres an error and we cant translate text right now & that they should come back later
 */
-function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate){
-    console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate}`)
+
+const example_response = {
+    "translations" : [ {
+      "translation" : "┬í Hola, mundo! "
+    }],
+    "word_count" : 5,
+    "character_count" : 26
+  }
+
+function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex, max_attempts){
+    console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate}. ${selector} ${selectorIndex}`)
+    if (max_attempts < 10) {
+        return example_response
+    } else {
+        console.log("The API cannot be reached right now, please try again later")
+    }
+
 }
-
-
 /*
 
 TODO
