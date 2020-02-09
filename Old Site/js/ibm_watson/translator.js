@@ -1,5 +1,5 @@
 // const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-const selector = ['h2']
+const selector = ['h2', 'h1']
 var translatorState = {}
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
@@ -32,35 +32,42 @@ if (localStorage.getItem("translatorState") === null) {
 
 // This function just adds information to the translatorState Object, inside of the "domTranslations" object.
 // Its important to note, that the "index" is the location on the dom, & that we are using bracket notation to support non-ascii, unlike dot notaiton
-// TODO -- fix data mutation error when adding another language, i think it has something to do with the index being set in the tempDataStructure
 function addTranslationToState(selector, index, language, text) {
     console.log(`** ${selector} ${index}`)
     console.log(translatorState.hasOwnProperty("domTranslations") == true)
-    if(translatorState.hasOwnProperty("domTranslations") == true && translatorState["domTranslations"].hasOwnProperty(selector) == true){
+    if(translatorState.hasOwnProperty("domTranslations") == true && translatorState["domTranslations"].hasOwnProperty(selector) == true && translatorState["domTranslations"][selector].hasOwnProperty(index)){
         console.log("looks like we can just add the data and not worry about a structure")
 
         // this data structure should only contain the index:{language:text}, where "index" referes to its position on the dom
         const tempDataStructure = {
-            [index]:{[language]:text}
+            [language]:text
         }
         console.log("******", tempDataStructure)
-        helper(translatorState["domTranslations"][selector], tempDataStructure)
+        helper(translatorState["domTranslations"][selector][index], tempDataStructure)
 
     } else {
         // Check if theres a "domTranslations" object, if not create it
         console.log("translatorState[selector] is currently", translatorState[selector])
         if (!translatorState["domTranslations"]){
-            console.log("shit dont exist fam, lets make it")
+            console.log("   \"domTranslations\" doesn't exist, so were making it")
             const tempDataStructure = {domTranslations:{}}
             helper(translatorState, tempDataStructure)
         }
         
         // if there is not a current "selector" in the data sturcture we need to make one
         if(!translatorState["domTranslations"][selector]){
-            console.log(`no data structure for ${selector} found, so were making one`)
+            console.log(`   no data structure for ${selector} found, so were making one`)
             const tempDataStructure = {[selector]:{}}
             console.log(tempDataStructure)
             helper(translatorState["domTranslations"], tempDataStructure)
+        }
+
+        // if the theres not an index attached to the selector we have to add one, or risk recursion forever
+        if(!translatorState["domTranslations"][selector][index]){
+            console.log(`   no data structure of index ${index} found for the selector, so were adding it`)
+            const tempDataStructure = {[index]:{}}
+            console.log(tempDataStructure)
+            helper(translatorState["domTranslations"][selector], tempDataStructure)
         }
 
         // since the selector:{index:{language:text}} just passed through, we created space for it to be added, but did not actually add it
@@ -194,7 +201,7 @@ function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selec
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Basic YXBpa2V5OnF1eWJnT3JyNFQxLXdKNjlydFZKYnZHZmFyMWhfR3pzUlk3WkVVbGlhelU3");
 
-    const raw = JSON.stringify({"text":[textToTranslate],"model_id":fromLanguage+"-"+toLanguage});
+    const raw = JSON.stringify({"text":[String(textToTranslate)],"model_id":fromLanguage+"-"+toLanguage});
     console.log("data to send", raw)
 
     const requestOptions = {
