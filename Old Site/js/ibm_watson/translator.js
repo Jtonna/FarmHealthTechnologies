@@ -1,5 +1,5 @@
 // const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-const selector = ['h2', 'h1']
+const selector = ['h1', 'h2',]
 var translatorState = {}
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
@@ -33,16 +33,16 @@ if (localStorage.getItem("translatorState") === null) {
 // This function just adds information to the translatorState Object, inside of the "domTranslations" object.
 // Its important to note, that the "index" is the location on the dom, & that we are using bracket notation to support non-ascii, unlike dot notaiton
 function addTranslationToState(selector, index, language, text) {
-    console.log(`** ${selector} ${index}`)
-    console.log(translatorState.hasOwnProperty("domTranslations") == true)
+    console.log(`addTranslationToState selector:${selector} index:${index} language:${language} text:${text}`)
+
     if(translatorState.hasOwnProperty("domTranslations") == true && translatorState["domTranslations"].hasOwnProperty(selector) == true && translatorState["domTranslations"][selector].hasOwnProperty(index)){
-        console.log("looks like we can just add the data and not worry about a structure")
+        console.log("   looks like we can just add the data and not worry about a structure")
 
         // this data structure should only contain the index:{language:text}, where "index" referes to its position on the dom
         const tempDataStructure = {
             [language]:text
         }
-        console.log("******", tempDataStructure)
+        console.log("Adding Data To State", tempDataStructure)
         helper(translatorState["domTranslations"][selector][index], tempDataStructure)
 
     } else {
@@ -64,7 +64,7 @@ function addTranslationToState(selector, index, language, text) {
 
         // if the theres not an index attached to the selector we have to add one, or risk recursion forever
         if(!translatorState["domTranslations"][selector][index]){
-            console.log(`   no data structure of index ${index} found for the selector, so were adding it`)
+            console.log(`   no data structure for index ${index} found for the selector, so were adding it`)
             const tempDataStructure = {[index]:{}}
             console.log(tempDataStructure)
             helper(translatorState["domTranslations"][selector], tempDataStructure)
@@ -72,7 +72,7 @@ function addTranslationToState(selector, index, language, text) {
 
         // since the selector:{index:{language:text}} just passed through, we created space for it to be added, but did not actually add it
         // we can just recursively pass the data back in to be added
-        console.log(`Just created data structures, now were going to do some recursion for ${selector}/${index}`)
+        console.log(`   Just created data structures, now were going to do some recursion for ${selector}/${index}`)
         addTranslationToState(selector, index, language, text)
         
     }
@@ -121,7 +121,7 @@ function shouldTranslateChecker(){
     //console.log(`Last index in the selector ${lastIndexInLastSelector}`)
 
     // Uses the two above variables to access the last "domTranslations" index's object's keys, which should be a language
-    const locationKeysToCheck = Object.keys(translatorState["domTranslations"][lastSelectorInDomTranslations][Object.keys(translatorState["domTranslations"]["h2"]).length-1])
+    const locationKeysToCheck = Object.keys(translatorState["domTranslations"][lastSelectorInDomTranslations][Object.keys(translatorState["domTranslations"][selector]).length-1])
     //console.log("languages avaliable", locationKeysToCheck)
 
     if(locationKeysToCheck.includes(languageUserWants)){
@@ -170,7 +170,7 @@ function startTranslation(toLanguage){
             const value = Object.values(locationToGetDataFrom[i])
             console.log(key, value)
             // pass beginWatsonTranslation, fromLanguage, toLanguage, current selector, selector index & 0 (for max attempts)
-            beginWatsonTranslation(key, toLanguage, value, currentSelector, currentSelectorsIndexs, 0)
+            beginWatsonTranslation(key, toLanguage, value, currentSelector, currentSelectorsIndexs[i], 0)
         }
         console.log("\n")
     }
