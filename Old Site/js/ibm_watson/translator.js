@@ -194,29 +194,27 @@ const example_response = {
 
 function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex, max_attempts){
     console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate} @ ${selector} ${selectorIndex}`)
-    const watsonUrl = "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
-    const sadlyPublicApiKeyBecauseThisIsntServerSideJS = "apikey:quybgOrr4T1-wJ69rtVJbvGfar1h_GzsRY7ZEUliazU7"
-    const dataToSend = {
-        "text": [textToTranslate],
-        "model_id": fromLanguage+"-"+toLanguage
-    }
 
-    console.log(dataToSend)
+    const watsonApiUrl = "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
+    
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Basic YXBpa2V5OnF1eWJnT3JyNFQxLXdKNjlydFZKYnZHZmFyMWhfR3pzUlk3WkVVbGlhelU3");
 
-    /*
-    TODO --
-        xinvoke the function and pass in dummy data and console log it
-        xstructure the data to send to the api
-        implement fetch & error handeling
-        implement max_attempts after
-    */
-    // if (max_attempts < 10) {
-    //     // begin fetch
-    //     // TODO -- Implement fetch here
-    //     // end fetch
-    // } else {
-    //     console.log("The API cannot be reached right now, please try again later")
-    // }
+    const raw = JSON.stringify({"text":[textToTranslate],"model_id":fromLanguage+"-"+toLanguage});
+    console.log("data to send", raw)
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch(watsonApiUrl, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
 
 }
 function test(){
