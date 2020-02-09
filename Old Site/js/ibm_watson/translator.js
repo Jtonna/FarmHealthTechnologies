@@ -32,10 +32,11 @@ if (localStorage.getItem("translatorState") === null) {
 
 // This function just adds information to the translatorState Object, inside of the "domTranslations" object.
 // Its important to note, that the "index" is the location on the dom, & that we are using bracket notation to support non-ascii, unlike dot notaiton
+// TODO -- fix data mutation error when adding another language, i think it has something to do with the index being set in the tempDataStructure
 function addTranslationToState(selector, index, language, text) {
     console.log(`** ${selector} ${index}`)
     console.log(translatorState.hasOwnProperty("domTranslations") == true)
-    if(translatorState.hasOwnProperty("domTranslations") == true && translatorState["domTranslations"].hasOwnProperty(selector)){
+    if(translatorState.hasOwnProperty("domTranslations") == true && translatorState["domTranslations"].hasOwnProperty(selector) == true){
         console.log("looks like we can just add the data and not worry about a structure")
 
         // this data structure should only contain the index:{language:text}, where "index" referes to its position on the dom
@@ -78,6 +79,7 @@ console.log("\n")
 
 console.log("\nThe Translator State\n",translatorState,"\n\n")
 
+// addTranslationToState("h2", "0", "es", "Hola")
 
 // Sets the translatorState object to local storage
 function setTranslatorState(){
@@ -183,15 +185,6 @@ create a beginWatsonTranslation function that takes in 5 variables (fromLang, to
     else
         alert the user theres an error and we cant translate text right now & that they should come back later
 */
-
-const example_response = {
-    "translations" : [ {
-      "translation" : "┬í Hola, mundo! "
-    }],
-    "word_count" : 5,
-    "character_count" : 26
-}
-
 function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex, max_attempts){
     console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate} @ ${selector} ${selectorIndex}`)
 
@@ -211,14 +204,15 @@ function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selec
       redirect: 'follow'
     };
 
+    const response = {}
+
     fetch(watsonApiUrl, requestOptions)
       .then(response => response.text())
-      .then(result => console.log(result))
+      .then(result => addTranslationToState(selector, selectorIndex, toLanguage, String(Object.values(JSON.parse(result)["translations"][0]))))
       .catch(error => console.log('error', error));
-
 }
 function test(){
-    beginWatsonTranslation("en", "es", "Hello world!", "p", 0, 0)
+    beginWatsonTranslation("en", "es", "Its pretty good", "h2", 0, 0)
 }
 /*
 
