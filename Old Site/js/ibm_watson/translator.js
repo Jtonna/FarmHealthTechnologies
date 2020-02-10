@@ -134,7 +134,7 @@ function shouldTranslateChecker(){
         // TODO -- Invoke the beginTranslationFromState function and pass in the languageUserWants
     } else {
         console.log("looks like we need to send it to watson")
-        //startTranslation(languageUserWants)
+        startTranslation(languageUserWants)
     }
 
 
