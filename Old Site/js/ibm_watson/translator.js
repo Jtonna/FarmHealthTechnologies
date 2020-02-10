@@ -141,20 +141,10 @@ function shouldTranslateChecker(){
     console.log("\n")
 }
 
-/*
-
-TODO
-create a startTranslation function that takes in a "to" language; our from will always be english
-    loop over the translatorState Object
-        for each "selector" in the object
-            for each index
-                grab the {language:phrase}, where the language is english
-                pass the phrase & the from & to language to the beginWatsonTranslation function, so it gets translated
-                when the translated phrase is returned pass it to the addTranslationToState Function to be stored
-*/
+// takes in a language & checks the last selector's last index (object) and sees if any of those objects keys are the language the user wants
+// if they arent we have to use api watson, if they are we translate from local storage
 function startTranslation(toLanguage){
     // Our base language for all translations will be english
-    const fromLanguage = "english"
     const selectorsInTranslatorState = Object.keys(translatorState["domTranslations"])
     console.log("The selectors Avaliable", selectorsInTranslatorState)
 
