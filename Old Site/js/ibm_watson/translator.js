@@ -1,5 +1,5 @@
 // const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-const selector = ['h1', 'h2',]
+const selector = ['h1', 'h2', 'p',]
 var translatorState = {}
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
@@ -112,25 +112,32 @@ function cls(){
 function shouldTranslateChecker(){
     const languageUserWants = document.getElementById("translatableLanguages").value
     console.log("Language Requested:", languageUserWants)
-    // Accesses the last "key" in "domTranslations", which should be a "selector" like "h1", "p", "a"
-    const lastSelectorInDomTranslations = Object.keys(translatorState["domTranslations"])[Object.keys(translatorState["domTranslations"]).length-1]
-    //console.log(`Last selector ${lastSelectorInDomTranslations}`)
 
-    // Gets the index of the last entry for the "selector", which should be the last dom element added to the object
-    const lastIndexInLastSelector = Object.keys(lastSelectorInDomTranslations).length
-    //console.log(`Last index in the selector ${lastIndexInLastSelector}`)
+    // Gets an array of selectors in the domTranslations Object  ex..["h1", "h2", "h3"]
+    const selectorsInState = Object.keys(translatorState["domTranslations"])
 
-    // Uses the two above variables to access the last "domTranslations" index's object's keys, which should be a language
-    const locationKeysToCheck = Object.keys(translatorState["domTranslations"][lastSelectorInDomTranslations][Object.keys(translatorState["domTranslations"][selector]).length-1])
-    //console.log("languages avaliable", locationKeysToCheck)
+    // Gets the last selector in the domTranslations Object ex..."h6"
+    const lastSelectorInState = selectorsInState[Object.keys(translatorState["domTranslations"]).length-1]
+    console.log("   lastSelectorInState:", lastSelectorInState)
 
-    if(locationKeysToCheck.includes(languageUserWants)){
+    // Gets the last selectors index's, meaning the last object nested under the selector ex... "0{...}, 1{...}, ..."
+    const lastSelectorsIndexs = Object.keys(translatorState["domTranslations"][lastSelectorInState])
+    console.log("   lastSelectorsIndexs:", lastSelectorsIndexs)
+
+    // Gets the languages "keys", that are in the last selectors, last index's object. ex.. ["en"], or ["en", "es", "ru"]
+    const languagesAvaliable = Object.keys(translatorState["domTranslations"][lastSelectorInState][lastSelectorsIndexs.length-1])
+    console.log("   Languages Avaliable:", languagesAvaliable)
+
+    // Check the last selector's last index to see if the language the user wants is avaliable, if its in local storage we can use that, else use watson
+    if(languagesAvaliable.includes(languageUserWants)){
         console.log(`${languageUserWants} is there, we can translate from the translatorState object instead of sending it to watson`)
         // TODO -- Invoke the beginTranslationFromState function and pass in the languageUserWants
     } else {
         console.log("looks like we need to send it to watson")
-        startTranslation(languageUserWants)
+        //startTranslation(languageUserWants)
     }
+
+
     console.log("\n")
 }
 
