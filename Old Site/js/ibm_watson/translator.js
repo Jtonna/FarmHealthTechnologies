@@ -216,3 +216,11 @@ create a translateFromLocalStorage function that takes in one variable "to_langu
             and each selectors index in the translatorState object
             replace the current DOM elements innerText with the "to_languages" version
 */
+
+function translationTime(toLanguage){
+    // for each selector in the translatorState["domTranslations"] Object
+        // for each index (0, 1, 2, 3...)
+            // get the "key" where the "key" represents "toLanguage" & the value associated with it which should be the translation
+            // use document.getElementByTagName to replace the element's innerText or textContent
+
+}
