@@ -1,5 +1,5 @@
-// const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-const selector = ['h1', 'h2', 'p',]
+const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+// const selector = ['h1', 'h2', 'p',]
 var translatorState = {}
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
