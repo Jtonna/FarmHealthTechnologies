@@ -44,7 +44,9 @@ function addTranslationToState(selector, index, language, text) {
         }
         console.log("Adding Data To State", tempDataStructure)
         helper(translatorState["domTranslations"][selector][index], tempDataStructure)
-
+        // Now that all the translations shold be done, we need to save the translation to state
+        console.warn("Attempting to save translator state")
+        setTranslatorState()
     } else {
         // Check if theres a "domTranslations" object, if not create it
         console.log("translatorState[selector] is currently", translatorState[selector])
@@ -171,6 +173,8 @@ function startTranslation(toLanguage){
         }
         console.log("\n")
     }
+
+
     // TODO invoke translateFromLocalStorage & pass it the "toLanguage"
 }
 
@@ -196,8 +200,6 @@ function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selec
       body: raw,
       redirect: 'follow'
     };
-
-    const response = {}
 
     fetch(watsonApiUrl, requestOptions)
       .then(response => response.text())
