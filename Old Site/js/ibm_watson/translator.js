@@ -184,25 +184,14 @@ function startTranslation(toLanguage){
     // TODO invoke translateFromLocalStorage & pass it the "toLanguage"
 }
 
-/*
-
-TODO
-create a beginWatsonTranslation function that takes in 5 variables (fromLang, toLang, textToTranslate, selector, selectorIndex)
-    if max_attempts is < 10
-        pass the from_language, to_language & text to translate to the IBM Watson's Translation API
-        if the response is a time-out error or something along those lines
-            +1 max attempts
-            recursively call the beginWatsonTranslation & pass the data back into it with the current value of max_attempts + 1
-        else (if it was a success)
-            invoke addTranslationToState & pass it the selector, index, toLanguage & the translated text to add at that position
-
-    else
-        alert the user theres an error and we cant translate text right now & that they should come back later
-*/
-function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex, max_attempts){
+// Takes in from-to languages and formats them to look like "en-es", text to translate, selectors and selectorIndex's (which are dom positions)
+// It passes the data to corsanwehere, with an apikey (sadly unsecured), and corsanywhere forwards the request and returns the translated version
+// When it returns the data we pass that to addTranslationToState to be added, if theres an error, we dont get the translation sadly
+function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex){
     console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate} @ ${selector} ${selectorIndex}`)
 
-    const watsonApiUrl = "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
+    // Using CORS anywhere because actual cors issues are really really annoying.
+    const watsonApiUrl = "https://cors-anywhere.herokuapp.com/https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
     
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -224,9 +213,6 @@ function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selec
       .then(response => response.text())
       .then(result => addTranslationToState(selector, selectorIndex, toLanguage, String(Object.values(JSON.parse(result)["translations"][0]))))
       .catch(error => console.log('error', error));
-}
-function test(){
-    beginWatsonTranslation("en", "es", "Its pretty good", "h2", 0, 0)
 }
 /*
 
