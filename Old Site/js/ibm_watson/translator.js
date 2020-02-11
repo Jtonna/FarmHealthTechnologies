@@ -166,21 +166,25 @@ function startTranslation(toLanguage){
         console.log(locationToGetDataFrom)
 
         // for each "index" we need to get the corrosponding language "key" & text "value"
+        // the key should be a language & value should be the text (key:value)
+        // the language should always be english, since thats our base language
         for (let i = 0; i< currentSelectorsIndexs.length; i++){
-            const key = Object.keys(locationToGetDataFrom[i])
-            const value = Object.values(locationToGetDataFrom[i])
-            console.log(key, value)
-            // pass beginWatsonTranslation, fromLanguage, toLanguage, current selector, selector index & 0 (for max attempts)
-            beginWatsonTranslation(key, toLanguage, value, currentSelector, currentSelectorsIndexs[i], 0)
+            const textToSend = translatorState["domTranslations"][currentSelector][currentSelectorsIndexs[i]]["en"]
+            // pass beginWatsonTranslation "en", toLanguage, textToSend, current selector, selector index
+            beginWatsonTranslation("en", toLanguage, textToSend, currentSelector, currentSelectorsIndexs[i], 0)
         }
         console.log("\n")
     }
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // Takes in from-to languages and formats them to look like "en-es", text to translate, selectors and selectorIndex's (which are dom positions)
 // It passes the data to corsanwehere, with an apikey (sadly unsecured), and corsanywhere forwards the request and returns the translated version
 // When it returns the data we pass that to addTranslationToState to be added, if theres an error, we dont get the translation sadly
-function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex){
+async function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex){
     console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate} @ ${selector} ${selectorIndex}`)
 
     // Using CORS anywhere because actual cors issues are really really annoying.
@@ -204,6 +208,10 @@ function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selec
       .then(response => response.text())
       .then(result => addTranslationToState(selector, selectorIndex, toLanguage, String(Object.values(JSON.parse(result)["translations"][0]))))
       .catch(error => console.log('error', error));
+      translationTime(toLanguage)
+    
+    await sleep(3000)
+    translationTime(toLanguage)
 }
 
 // Takes in a target language & translates all text content to said language as long as its avaliable in the translatorState object
