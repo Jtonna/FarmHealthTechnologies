@@ -135,7 +135,7 @@ function shouldTranslateChecker(){
     // Check the last selector's last index to see if the language the user wants is avaliable, if its in local storage we can use that, else use watson
     if(languagesAvaliable.includes(languageUserWants)){
         console.log(`${languageUserWants} is there, we can translate from the translatorState object instead of sending it to watson`)
-        // TODO -- Invoke the beginTranslationFromState function and pass in the languageUserWants
+        translationTime(languageUserWants)
     } else {
         console.log("looks like we need to send it to watson")
         startTranslation(languageUserWants)
@@ -175,7 +175,6 @@ function startTranslation(toLanguage){
         }
         console.log("\n")
     }
-    // TODO invoke translateFromLocalStorage & pass it the "toLanguage"
 }
 
 // Takes in from-to languages and formats them to look like "en-es", text to translate, selectors and selectorIndex's (which are dom positions)
@@ -201,26 +200,27 @@ function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selec
       redirect: 'follow'
     };
 
-    const response = {}
-
     fetch(watsonApiUrl, requestOptions)
       .then(response => response.text())
       .then(result => addTranslationToState(selector, selectorIndex, toLanguage, String(Object.values(JSON.parse(result)["translations"][0]))))
       .catch(error => console.log('error', error));
 }
-/*
 
-TODO
-create a translateFromLocalStorage function that takes in one variable "to_language"
-        for each "selector"
-            and each selectors index in the translatorState object
-            replace the current DOM elements innerText with the "to_languages" version
-*/
-
+// Takes in a target language & translates all text content to said language as long as its avaliable in the translatorState object
 function translationTime(toLanguage){
-    // for each selector in the translatorState["domTranslations"] Object
-        // for each index (0, 1, 2, 3...)
-            // get the "key" where the "key" represents "toLanguage" & the value associated with it which should be the translation
-            // use document.getElementByTagName to replace the element's innerText or textContent
-
+    // Gets an array of selectors in the domTranslations Object  ex..["h1", "h2", "h3"]
+    const selectorsInState = Object.keys(translatorState["domTranslations"])
+   
+    // for each selector in translatiorState["domTranslations"] ex.."p{...}, a{...}, h1{...}"
+    for(let i = 0; i < selectorsInState.length; i++){
+        // for each index in the selector ex.."0{...}, 1{...}, 2{...}""
+        console.log(selectorsInState[i])
+        console.log(Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length)
+        for(let j = 0; j < Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length; j++){
+            console.log(translatorState["domTranslations"][selectorsInState[i]][j])
+            document.getElementsByTagName(selectorsInState[i])[j].innerText = translatorState["domTranslations"][selectorsInState[i]][j][toLanguage]
+            //console.log("**", translatorState["domTranslations"][selectorsInState[i]][j][toLanguage])
+        }
+    console.log("\n")
+    }
 }
