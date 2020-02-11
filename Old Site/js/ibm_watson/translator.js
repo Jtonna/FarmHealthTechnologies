@@ -172,23 +172,20 @@ function startTranslation(toLanguage){
             const textToSend = translatorState["domTranslations"][currentSelector][currentSelectorsIndexs[i]]["en"]
             // pass beginWatsonTranslation "en", toLanguage, textToSend, current selector, selector index
             beginWatsonTranslation("en", toLanguage, textToSend, currentSelector, currentSelectorsIndexs[i], 0)
+            console.log("**attempting translationTime")
         }
         console.log("\n")
     }
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 // Takes in from-to languages and formats them to look like "en-es", text to translate, selectors and selectorIndex's (which are dom positions)
 // It passes the data to corsanwehere, with an apikey (sadly unsecured), and corsanywhere forwards the request and returns the translated version
 // When it returns the data we pass that to addTranslationToState to be added, if theres an error, we dont get the translation sadly
-async function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex){
+function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex){
     console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate} @ ${selector} ${selectorIndex}`)
 
     // Using CORS anywhere because actual cors issues are really really annoying.
-    const watsonApiUrl = "https://cors-anywhere.herokuapp.com/https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
+    const watsonApiUrl = "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
     
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -208,10 +205,6 @@ async function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate,
       .then(response => response.text())
       .then(result => addTranslationToState(selector, selectorIndex, toLanguage, String(Object.values(JSON.parse(result)["translations"][0]))))
       .catch(error => console.log('error', error));
-      translationTime(toLanguage)
-    
-    await sleep(3000)
-    translationTime(toLanguage)
 }
 
 // Takes in a target language & translates all text content to said language as long as its avaliable in the translatorState object
