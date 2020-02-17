@@ -185,7 +185,7 @@ function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selec
     console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate} @ ${selector} ${selectorIndex}`)
 
     // Using CORS anywhere because actual cors issues are really really annoying.
-    const watsonApiUrl = "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
+    const watsonApiUrl = "https://cors-anywhere.herokuapp.com/https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
     
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
