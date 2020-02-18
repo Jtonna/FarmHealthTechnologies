@@ -239,33 +239,17 @@ function translationTime(toLanguage){
     // Gets an array of selectors in the domTranslations Object  ex..["h1", "h2", "h3"]
     console.log("requested translation time")
     const selectorsInState = Object.keys(translatorState["domTranslations"])
+    console.log("   Selectors in state", selectorsInState)
     // for each selector in translatiorState["domTranslations"] ex.."p{...}, a{...}, h1{...}"
-    for(let i = 0; i < selectorsInState.length; i++){
-        // for each index in the selector ex.."0{...}, 1{...}, 2{...}""
-        console.log("Current selector", selectorsInState[i])
-        console.log("inner j loop max loop num", Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length)
-        console.log("Live HTML Collection of the current selector", document.getElementsByTagName(selectorsInState[i]))
-        for(let j = 0; j < Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length; j++){
-            console.log("   Debug translationTime 'cannot set innerText of undefined' || Inner Number [j]:", j, " Outer Loop Number [i]:", i)
-            console.log("       (selectorsInState[i])", document.getElementsByTagName(selectorsInState[i]))
-            console.log("       (selectorsInState[i])[j]", document.getElementsByTagName(selectorsInState[i])[j])
-            //console.log("   ",)
-            //console.log("   ",)
-            //console.log("   ",)
-            console.log(translatorState["domTranslations"][selectorsInState[i]][j])
-            console.warn("Attempting to change", document.getElementsByTagName(selectorsInState[i])[j].innerText)
-            console.log(document.getElementsByTagName(selectorsInState[i])[j])
-            console.log(document.getElementsByTagName(selectorsInState[i])[j].innerText)
+    /*
+    Basically just replace each dom element that doesnt contain an "</" in its inner html with what we have in local storage or pre-defined text
+    */
 
-            // If the current dom element we are looking at has "</" in its innnerHtml we shouldnt change the element. It would mess things up pretty bad
-            if(document.getElementsByTagName(selectorsInState[i])[j].innerHTML.includes("</") === false){
-                document.getElementsByTagName(selectorsInState[i])[j].innerText = "changed it "+selectorsInState[i]+" "+i+" "+j
-            } else {
-                console.warn("Skipping translation on do because it contains an html element, for more info see selector",selectorsInState[i], " on the dom." )
-            }
+    for( let i = 0; i<selectorsInState.length; i++){
+        const currentSelector = selectorsInState[i]
 
-            //console.log("**", translatorState["domTranslations"][selectorsInState[i]][j][toLanguage])
-        }
-    console.log("\n")
+        
     }
+
+    console.log("\n")
 }
