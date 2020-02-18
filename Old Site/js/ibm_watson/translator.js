@@ -178,41 +178,15 @@ function startTranslation(toLanguage){
 
         // Now that every value should be in the array, we can pass the information to the begin watson translation function
         console.log(englishValuesToTranslate)
-        beginWatsonTranslation2("en", toLanguage, englishValuesToTranslate, currentSelector)
+        beginWatsonTranslation("en", toLanguage, englishValuesToTranslate, currentSelector)
         console.log("\n")
     }
 }
 
-// Takes in from-to languages and formats them to look like "en-es", text to translate, selectors and selectorIndex's (which are dom positions)
-// It passes the data to corsanwehere, with an apikey (sadly unsecured), and corsanywhere forwards the request and returns the translated version
-// When it returns the data we pass that to addTranslationToState to be added, if theres an error, we dont get the translation sadly
-function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selector, selectorIndex){
-    console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate} @ ${selector} ${selectorIndex}`)
-
-    // Using CORS anywhere because actual cors issues are really really annoying.
-    const watsonApiUrl = "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
-    
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Basic YXBpa2V5OnF1eWJnT3JyNFQxLXdKNjlydFZKYnZHZmFyMWhfR3pzUlk3WkVVbGlhelU3");
-
-    const raw = JSON.stringify({"text":[String(textToTranslate)],"model_id":fromLanguage+"-"+toLanguage});
-    console.log("data to send", raw)
-
-    const requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-
-    fetch(watsonApiUrl, requestOptions)
-      .then(response => response.text())
-      .then(result => addTranslationToState(selector, selectorIndex, toLanguage, String(Object.values(JSON.parse(result)["translations"][0]))))
-      .catch(error => console.log('error', error));
-}
-
-function beginWatsonTranslation2(fromLanguage, toLanguage, englishValuesToTranslate, selector){
+// Takes in from-to languages, an array of data to translate and a selector
+// Passes that data to the watson API and then parses the response and sends values 1 by 1 to addTranslationToState
+// Finally initializes translationTime to translate the data that was just added.
+function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTranslate, selector){
     console.log("Begin Watson Translation")
     console.log("   ",fromLanguage+"-"+toLanguage, englishValuesToTranslate, selector)
 
@@ -224,12 +198,13 @@ function beginWatsonTranslation2(fromLanguage, toLanguage, englishValuesToTransl
     headers.append("Content-Type", "application/json")
     headers.append("Authorization", "Basic YXBpa2V5OnF1eWJnT3JyNFQxLXdKNjlydFZKYnZHZmFyMWhfR3pzUlk3WkVVbGlhelU3")
 
+    // raw data to send
     const rawData = JSON.stringify({
         "text": englishValuesToTranslate,
         "model_id": fromLanguage+"-"+toLanguage
     })
-    console.log("   rawData: ",rawData)
 
+    // Request settings
     const requestSettings = {
         method: 'POST',
         headers: headers,
@@ -237,8 +212,19 @@ function beginWatsonTranslation2(fromLanguage, toLanguage, englishValuesToTransl
         redirect: 'follow'
     }
 
+    // Fetch
+    fetch(translatorURL, requestSettings)
+        .then(response => response.text())
+        .then(result => passTranslationToState(JSON.parse(result)))
+        .catch(error => console.log('error', error));
 
-
+    // Now that we have a response that should contain a translator for every selector item, we have to pass each value to the addTranslationToState function
+    function passTranslationToState(result){
+        // For each object in "translations" from the response pass the data to addTranslationToState
+        for(let i = 0; i < result["translations"].length; i++){
+            addTranslationToState(selector, i, toLanguage, result["translations"][i]["translation"])
+        }
+    }
 }
 
 // Takes in a target language & translates all text content to said language as long as its avaliable in the translatorState object
