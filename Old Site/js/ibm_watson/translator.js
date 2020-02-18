@@ -152,9 +152,13 @@ function startTranslation(toLanguage){
     const selectorsInTranslatorState = Object.keys(translatorState["domTranslations"])
     console.log("The selectors Avaliable", selectorsInTranslatorState)
 
+    
     // For each "selector" tag in the translatorState Object
     for(let i = 0; i < selectorsInTranslatorState.length; i++){
         console.log("\n")
+        
+        // This Array will be filled with text that needs to get translated in ascending order. (only relevant to the current selector)
+        let englishValuesToTranslate = []
 
         const currentSelector = selectorsInTranslatorState[i]
         console.log("Selector:", currentSelector)
@@ -165,15 +169,16 @@ function startTranslation(toLanguage){
         const locationToGetDataFrom = translatorState["domTranslations"][currentSelector]
         console.log(locationToGetDataFrom)
 
-        // for each "index" we need to get the corrosponding language "key" & text "value"
-        // the key should be a language & value should be the text (key:value)
-        // the language should always be english, since thats our base language
+        // For each index we get the value of the key, where the key is "en"
         for (let i = 0; i< currentSelectorsIndexs.length; i++){
             const textToSend = translatorState["domTranslations"][currentSelector][currentSelectorsIndexs[i]]["en"]
-            // pass beginWatsonTranslation "en", toLanguage, textToSend, current selector, selector index
-            beginWatsonTranslation("en", toLanguage, textToSend, currentSelector, currentSelectorsIndexs[i], 0)
-            console.log("**attempting translationTime")
+            // Add the key's value to the englishValuesToTranslate array
+            englishValuesToTranslate.push(textToSend)
         }
+
+        // Now that every value should be in the array, we can pass the information to the begin watson translation function
+        console.log(englishValuesToTranslate)
+        beginWatsonTranslation2("en", toLanguage, englishValuesToTranslate, currentSelector)
         console.log("\n")
     }
 }
@@ -185,7 +190,7 @@ function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selec
     console.log(`requested a translation from ${fromLanguage}, to ${toLanguage}, ${textToTranslate} @ ${selector} ${selectorIndex}`)
 
     // Using CORS anywhere because actual cors issues are really really annoying.
-    const watsonApiUrl = "https://cors-anywhere.herokuapp.com/https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
+    const watsonApiUrl = "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
     
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -205,6 +210,35 @@ function beginWatsonTranslation(fromLanguage, toLanguage, textToTranslate, selec
       .then(response => response.text())
       .then(result => addTranslationToState(selector, selectorIndex, toLanguage, String(Object.values(JSON.parse(result)["translations"][0]))))
       .catch(error => console.log('error', error));
+}
+
+function beginWatsonTranslation2(fromLanguage, toLanguage, englishValuesToTranslate, selector){
+    console.log("Begin Watson Translation")
+    console.log("   ",fromLanguage+"-"+toLanguage, englishValuesToTranslate, selector)
+
+    const antiCORS = "https://cors-anywhere.herokuapp.com/"
+    const translatorURL = antiCORS + "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
+
+    // Create headers
+    const headers = new Headers()
+    headers.append("Content-Type", "application/json")
+    headers.append("Authorization", "Basic YXBpa2V5OnF1eWJnT3JyNFQxLXdKNjlydFZKYnZHZmFyMWhfR3pzUlk3WkVVbGlhelU3")
+
+    const rawData = JSON.stringify({
+        "text": englishValuesToTranslate,
+        "model_id": fromLanguage+"-"+toLanguage
+    })
+    console.log("   rawData: ",rawData)
+
+    const requestSettings = {
+        method: 'POST',
+        headers: headers,
+        body: rawData,
+        redirect: 'follow'
+    }
+
+
+
 }
 
 // Takes in a target language & translates all text content to said language as long as its avaliable in the translatorState object
