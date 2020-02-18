@@ -1,4 +1,4 @@
-const selector = ['p', 'a', 'b', 'i', 'span', ]//'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const selector = ['p', 'a', 'b', 'i', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 // const selector = ['h1', 'h2', 'p',]
 var translatorState = {}
 
@@ -256,7 +256,13 @@ function translationTime(toLanguage){
             console.warn("Attempting to change", document.getElementsByTagName(selectorsInState[i])[j].innerText)
             console.log(document.getElementsByTagName(selectorsInState[i])[j])
             console.log(document.getElementsByTagName(selectorsInState[i])[j].innerText)
-            document.getElementsByTagName(selectorsInState[i])[j].innerText = "changed it "+selectorsInState[i]+" "+i+" "+j
+
+            // If the current dom element we are looking at has "</" in its innnerHtml we shouldnt change the element. It would mess things up pretty bad
+            if(document.getElementsByTagName(selectorsInState[i])[j].innerHTML.includes("</") === false){
+                document.getElementsByTagName(selectorsInState[i])[j].innerText = "changed it "+selectorsInState[i]+" "+i+" "+j
+            } else {
+                console.warn("Skipping translation on do because it contains an html element, for more info see selector",selectorsInState[i], " on the dom." )
+            }
 
             //console.log("**", translatorState["domTranslations"][selectorsInState[i]][j][toLanguage])
         }
