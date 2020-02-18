@@ -1,4 +1,4 @@
-const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const selector = ['p', 'a', 'b', 'i', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 // const selector = ['h1', 'h2', 'p',]
 var translatorState = {}
 
@@ -89,8 +89,6 @@ console.log("\n")
 }
 
 console.log("\nThe Translator State\n",translatorState,"\n\n")
-
-// addTranslationToState("h2", "0", "es", "Hola")
 
 // Sets the translatorState object to local storage
 function setTranslatorState(){
