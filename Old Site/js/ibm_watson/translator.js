@@ -17,8 +17,13 @@ if (localStorage.getItem("translatorState") === null) {
             // Keep track of how many times the forEach calls back(run/loops), & for each run pass the selector, index, language & inner text to the addTranslationToState function; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#Examples
             numCallbackRuns = 0
             theHtmlCollection.forEach(current_element => {
-                addTranslationToState(selector[selector_index], numCallbackRuns, "en", current_element.innerText)
-                numCallbackRuns++
+                // If the elements contains an "</" we know that there is more nested html and we should avoid adding that element
+                if(current_element.innerHTML.includes("</") === false){
+                    addTranslationToState(selector[selector_index], numCallbackRuns, "en", current_element.innerText)
+                    numCallbackRuns++
+                } else {
+                    console.warn("Skipping adding an element because it has nested html")
+                }
             });
         }
     }
@@ -236,11 +241,18 @@ function translationTime(toLanguage){
     // for each selector in translatiorState["domTranslations"] ex.."p{...}, a{...}, h1{...}"
     for(let i = 0; i < selectorsInState.length; i++){
         // for each index in the selector ex.."0{...}, 1{...}, 2{...}""
-        console.log(selectorsInState[i])
-        console.log(Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length)
+        console.log("Current selector", selectorsInState[i])
+        console.log("Times to inner-loop", Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length)
+        console.log("Live HTML Collection of the current selector", document.getElementsByTagName(selectorsInState[i]))
         for(let j = 0; j < Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length; j++){
+            console.log("   Debug translationTime 'cannot set innerText of undefined' || Inner Number [j]:", j, " Outer Loop Number [i]:", i)
+            console.log("       (selectorsInState[i])", document.getElementsByTagName(selectorsInState[i]))
+            console.log("       (selectorsInState[i])[j]", document.getElementsByTagName(selectorsInState[i])[j])
+            //console.log("   ",)
+            //console.log("   ",)
+            //console.log("   ",)
             console.log(translatorState["domTranslations"][selectorsInState[i]][j])
-            document.getElementsByTagName(selectorsInState[i])[j].innerText = translatorState["domTranslations"][selectorsInState[i]][j][toLanguage]
+            document.getElementsByTagName(selectorsInState[i])[j].innerText = "fuck it"
             //console.log("**", translatorState["domTranslations"][selectorsInState[i]][j][toLanguage])
         }
     console.log("\n")
