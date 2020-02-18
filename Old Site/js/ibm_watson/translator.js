@@ -224,14 +224,17 @@ function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTransla
         for(let i = 0; i < result["translations"].length; i++){
             addTranslationToState(selector, i, toLanguage, result["translations"][i]["translation"])
         }
+        console.log("finished passing data to state")
+        // Since the data should have been added we can initiate translationTime
+        translationTime(toLanguage)
     }
 }
 
 // Takes in a target language & translates all text content to said language as long as its avaliable in the translatorState object
 function translationTime(toLanguage){
     // Gets an array of selectors in the domTranslations Object  ex..["h1", "h2", "h3"]
+    console.log("requested translation time")
     const selectorsInState = Object.keys(translatorState["domTranslations"])
-   
     // for each selector in translatiorState["domTranslations"] ex.."p{...}, a{...}, h1{...}"
     for(let i = 0; i < selectorsInState.length; i++){
         // for each index in the selector ex.."0{...}, 1{...}, 2{...}""
