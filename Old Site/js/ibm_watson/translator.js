@@ -1,4 +1,4 @@
-const selector = ['p', 'a', 'b', 'i', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const selector = ['p', 'a', 'b', 'i', 'span', ]//'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 // const selector = ['h1', 'h2', 'p',]
 var translatorState = {}
 
@@ -18,7 +18,8 @@ if (localStorage.getItem("translatorState") === null) {
             numCallbackRuns = 0
             theHtmlCollection.forEach(current_element => {
                 // If the elements contains an "</" we know that there is more nested html and we should avoid adding that element
-                if(current_element.innerHTML.includes("</") === false){
+                // We also check to make sure its not an empty html tag containing nothing
+                if(current_element.innerHTML.includes("</") === false && current_element.innerText.length > 0){
                     addTranslationToState(selector[selector_index], numCallbackRuns, "en", current_element.innerText)
                     numCallbackRuns++
                 } else {
@@ -242,7 +243,7 @@ function translationTime(toLanguage){
     for(let i = 0; i < selectorsInState.length; i++){
         // for each index in the selector ex.."0{...}, 1{...}, 2{...}""
         console.log("Current selector", selectorsInState[i])
-        console.log("Times to inner-loop", Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length)
+        console.log("inner j loop max loop num", Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length)
         console.log("Live HTML Collection of the current selector", document.getElementsByTagName(selectorsInState[i]))
         for(let j = 0; j < Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length; j++){
             console.log("   Debug translationTime 'cannot set innerText of undefined' || Inner Number [j]:", j, " Outer Loop Number [i]:", i)
@@ -252,7 +253,11 @@ function translationTime(toLanguage){
             //console.log("   ",)
             //console.log("   ",)
             console.log(translatorState["domTranslations"][selectorsInState[i]][j])
-            document.getElementsByTagName(selectorsInState[i])[j].innerText = "fuck it"
+            console.warn("Attempting to change", document.getElementsByTagName(selectorsInState[i])[j].innerText)
+            console.log(document.getElementsByTagName(selectorsInState[i])[j])
+            console.log(document.getElementsByTagName(selectorsInState[i])[j].innerText)
+            document.getElementsByTagName(selectorsInState[i])[j].innerText = "changed it "+selectorsInState[i]+" "+i+" "+j
+
             //console.log("**", translatorState["domTranslations"][selectorsInState[i]][j][toLanguage])
         }
     console.log("\n")
