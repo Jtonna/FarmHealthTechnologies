@@ -245,10 +245,29 @@ function translationTime(toLanguage){
     Basically just replace each dom element that doesnt contain an "</" in its inner html with what we have in local storage or pre-defined text
     */
 
+    // For each selector
     for( let i = 0; i<selectorsInState.length; i++){
+
+        // The current selector we are looping for ex.."h1", or "span" or "p"
         const currentSelector = selectorsInState[i]
 
-        
+        // Selectors index's example..{0: {...}, 1: {...}, 2: {...}, ...}
+        const selectorsIndexs = translatorState["domTranslations"][currentSelector]
+
+        // Create an HTMLCollection
+        const theHtmlCollection = document.getElementsByTagName(currentSelector)
+
+        // For each "selector" on the DOM
+        for( let j = 0; j< theHtmlCollection.length; j++){
+            // For the current DOM Element
+            console.log(theHtmlCollection[j])
+            // If the current DOM Element does NOT contain "</" in its innerHTML
+            if(!theHtmlCollection[j].innerHTML.includes("</")){
+                // Replace the text on the DOM with the corrosponding text from translatorState
+                theHtmlCollection[j].textContent = "replaced"+currentSelector+i+j
+            }
+        }
+
     }
 
     console.log("\n")
