@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Testing page for ibm watson translator</title>
+</head>
+<body>
+    <nav>
+        <div class="translator">
+            <select name="translatableLanguages" id="translatableLanguages">
+                <option value="en">english</option>
+                <option value="es">spanish</option>
+                <option value="ru">russian</option>
+            </select>
+            <button onClick="shouldTranslateChecker()">Translate</button>
+        </div>
+    </nav>
+
+    <section class="header">
+        <div class="title">
+            <h1>Hello world!</h1>
+            <h3>This is just a simple test</h3>
+        </div>
+    </section>
+    <section class="rick-n-morty">
+        <div class="show-info">
+            <h1 id="two">Rick and morty show information.</h1>
+            <h2>Its pretty good</h2>
+            <h3>[ADULT SWIM]</h3>
+            <h3>WHERES THE OTHER 2</h3>
+            <p>Traveling across the multiverse together, super genius Rick Sanchez and his grandson Morty Smith embark on wacky adventures where only one thing is absolute: Rick is the smartest madman in all the multiverse and nothing can change that, portal guns and all.</p>
+            <p>Rick is fucking awesommmmmeeee</p>
+            <p>Uhhhh what</p>
+        </div>
+    </section>
+</body>
+<!-- Translator script needs to be loaded after the body is parsed -->
+<script src="/Old Site/js/ibm_watson/translator.js"></script>
+</html>
