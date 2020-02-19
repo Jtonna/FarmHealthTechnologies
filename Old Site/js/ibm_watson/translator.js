@@ -236,35 +236,34 @@ function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTransla
 
 // Takes in a target language & translates all text content to said language as long as its avaliable in the translatorState object
 function translationTime(toLanguage){
-    // Gets an array of selectors in the domTranslations Object  ex..["h1", "h2", "h3"]
     console.log("requested translation time")
+
+    // Gets an array of selectors in the domTranslations Object  ex..["h1", "h2", "h3"]
     const selectorsInState = Object.keys(translatorState["domTranslations"])
     console.log("   Selectors in state", selectorsInState)
-    // for each selector in translatiorState["domTranslations"] ex.."p{...}, a{...}, h1{...}"
-    /*
-    Basically just replace each dom element that doesnt contain an "</" in its inner html with what we have in local storage or pre-defined text
-    */
 
     // For each selector
-    for( let i = 0; i<selectorsInState.length; i++){
-
+    for(let i = 0; i<selectorsInState.length; i++){
         // The current selector we are looping for ex.."h1", or "span" or "p"
         const currentSelector = selectorsInState[i]
-
         // Selectors index's example..{0: {...}, 1: {...}, 2: {...}, ...}
         const selectorsIndexs = translatorState["domTranslations"][currentSelector]
-
         // Create an HTMLCollection
         const theHtmlCollection = document.getElementsByTagName(currentSelector)
-
+        console.log("The collection", theHtmlCollection)
+        // Number of times we have replaced something
+        let numOfReplacements = 0
         // For each "selector" on the DOM
-        for( let j = 0; j< theHtmlCollection.length; j++){
-            // For the current DOM Element
-            console.log(theHtmlCollection[j])
-            // If the current DOM Element does NOT contain "</" in its innerHTML
-            if(!theHtmlCollection[j].innerHTML.includes("</")){
-                // Replace the text on the DOM with the corrosponding text from translatorState
-                theHtmlCollection[j].textContent = "replaced"+currentSelector+i+j
+        for(let j = 0; j< theHtmlCollection.length; j++){
+            console.log(currentSelector, i, j)
+            console.log(theHtmlCollection[j].innerText)
+            
+            // if the current dom's element's innerHTML length (without spaces) is bigger than 0
+            if(document.getElementsByTagName(currentSelector)[j].innerHTML.replace(/\s+/g, '').length > 0){
+                console.log("   theres some data here boss, we can replace stuff here")
+                console.log("   replaced based on numOfReplacements", numOfReplacements)
+                document.getElementsByTagName(currentSelector)[j].textContent = translatorState["domTranslations"][currentSelector][numOfReplacements][toLanguage]
+                numOfReplacements++
             }
         }
 
