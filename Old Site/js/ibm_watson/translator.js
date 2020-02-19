@@ -38,6 +38,19 @@ if (localStorage.getItem("translatorState") === null) {
     translatorState = getTranslatorState()
 }
 
+// If the user has translated before, we are going to use that language
+if(localStorage.getItem("lastLanguage") === null){
+    localStorage.setItem("lastLanguage", lastLanguage)
+} else {
+    lastLanguage = localStorage.getItem("lastLanguage")
+    console.warn("Loading Last Language from LocalStorage: ", lastLanguage)
+
+    // If the last language is not english, we will do the user a favor and translate
+    if(lastLanguage !== "en"){
+        translationTime(lastLanguage)
+    }
+}
+
 // This function just adds information to the translatorState Object, inside of the "domTranslations" object.
 // Its important to note, that the "index" is the location on the dom, & that we are using bracket notation to support non-ascii, unlike dot notaiton
 function addTranslationToState(selector, index, language, text) {
@@ -225,7 +238,6 @@ function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTransla
     fetch(translatorURL, requestSettings)
         .then(response => response.text())
         .then(result => passTranslationToState(JSON.parse(result)))
-        .then(translationTime(toLanguage))
         .catch(error => console.log('error', error));
 
     // Now that we have a response that should contain a translator for every selector item, we have to pass each value to the addTranslationToState function
@@ -235,14 +247,14 @@ function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTransla
             addTranslationToState(selector, i, toLanguage, result["translations"][i]["translation"])
         }
         console.log("finished passing data to state")
-        // Since the data should have been added we can initiate translationTime
-        // translationTime(toLanguage)
     }
+    // Since the data should have been added we can initiate translationTime
+    translationTime(toLanguage)
 }
 
 // Takes in a target language & translates all text content to said language as long as its avaliable in the translatorState object
 function translationTime(toLanguage){
-    console.log("requested translation time")
+    console.log("requested translation time", toLanguage)
 
     // Gets an array of selectors in the domTranslations Object  ex..["h1", "h2", "h3"]
     const selectorsInState = Object.keys(translatorState["domTranslations"])
@@ -277,15 +289,4 @@ function translationTime(toLanguage){
         console.log("\n")
     }
 
-}
-
-// If the user has translated before, we are going to use that language instead of english
-if(localStorage.getItem("lastLanguage") === null){
-    localStorage.setItem("lastLanguage", lastLanguage)
-} else {
-    lastLanguage = localStorage.getItem("lastLanguage")
-    console.warn("Loading Last Language from LocalStorage: ", lastLanguage)
-
-    // Initiate Auto Translation 
-    translationTime(lastLanguage)
 }
