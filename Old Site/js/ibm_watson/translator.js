@@ -246,8 +246,6 @@ function translationTime(toLanguage){
     for(let i = 0; i<selectorsInState.length; i++){
         // The current selector we are looping for ex.."h1", or "span" or "p"
         const currentSelector = selectorsInState[i]
-        // Selectors index's example..{0: {...}, 1: {...}, 2: {...}, ...}
-        const selectorsIndexs = translatorState["domTranslations"][currentSelector]
         // Create an HTMLCollection
         const theHtmlCollection = document.getElementsByTagName(currentSelector)
         console.log("The collection", theHtmlCollection)
@@ -265,7 +263,7 @@ function translationTime(toLanguage){
                     console.log("   theres some data here boss, we can replace stuff here")
                     console.log("   replaced based on numOfReplacements", numOfReplacements)
                     // Replace the element with the translation from local storage
-                    document.getElementsByTagName(currentSelector)[j].textContent = "*"+translatorState["domTranslations"][currentSelector][numOfReplacements][toLanguage]
+                    document.getElementsByTagName(currentSelector)[j].textContent = translatorState["domTranslations"][currentSelector][numOfReplacements][toLanguage]
                     numOfReplacements++
                 }
             }
