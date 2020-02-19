@@ -1,6 +1,8 @@
 const selector = ['p', 'a', 'b', 'i', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-// const selector = ['h1', 'h2', 'p',]
 var translatorState = {}
+
+// By default the last language is english, if the user has translated before the last language recorded will be used onLoad
+var lastLanguage = "en"
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
 // We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
@@ -145,6 +147,9 @@ function shouldTranslateChecker(){
         startTranslation(languageUserWants)
     }
 
+    // Finally, change lastLanguage to the language the user wants
+    console.log("Setting localStorage for lastLanguage", languageUserWants)
+    localStorage.setItem("lastLanguage", languageUserWants)
 
     console.log("\n")
 }
@@ -220,6 +225,7 @@ function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTransla
     fetch(translatorURL, requestSettings)
         .then(response => response.text())
         .then(result => passTranslationToState(JSON.parse(result)))
+        .then(translationTime(toLanguage))
         .catch(error => console.log('error', error));
 
     // Now that we have a response that should contain a translator for every selector item, we have to pass each value to the addTranslationToState function
@@ -230,7 +236,7 @@ function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTransla
         }
         console.log("finished passing data to state")
         // Since the data should have been added we can initiate translationTime
-        translationTime(toLanguage)
+        // translationTime(toLanguage)
     }
 }
 
@@ -271,4 +277,15 @@ function translationTime(toLanguage){
         console.log("\n")
     }
 
+}
+
+// If the user has translated before, we are going to use that language instead of english
+if(localStorage.getItem("lastLanguage") === null){
+    localStorage.setItem("lastLanguage", lastLanguage)
+} else {
+    lastLanguage = localStorage.getItem("lastLanguage")
+    console.warn("Loading Last Language from LocalStorage: ", lastLanguage)
+
+    // Initiate Auto Translation 
+    translationTime(lastLanguage)
 }
