@@ -3,7 +3,7 @@ const selector = ['p', 'a', 'b', 'i', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
 var translatorState = {}
 
 // If the user doesnt have a "translatorState" object in local storage, they must not have visited the site before
-//     We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
+// We are going to need to loop over the DOM and populate the translatorState object by passong values to the addTranslationToState function
 // If the user does have the object in storage we need to pull it & set it
 if (localStorage.getItem("translatorState") === null) {
 
