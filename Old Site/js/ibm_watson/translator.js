@@ -18,8 +18,8 @@ if (localStorage.getItem("translatorState") === null) {
             numCallbackRuns = 0
             theHtmlCollection.forEach(current_element => {
                 // If the elements contains an "</" we know that there is more nested html and we should avoid adding that element
-                // We also check to make sure its not an empty html tag containing nothing
-                if(current_element.innerHTML.includes("</") === false && current_element.innerText.length > 0){
+                // We also check to make sure its not an empty html tag containing nothing, we do this by removind spaces from the innerHTML and checking the length
+                if(current_element.innerHTML.includes("</") === false && current_element.innerHTML.replace(/\s+/g, '').length > 0){
                     addTranslationToState(selector[selector_index], numCallbackRuns, "en", current_element.innerText)
                     numCallbackRuns++
                 } else {
@@ -258,16 +258,19 @@ function translationTime(toLanguage){
             console.log(currentSelector, i, j)
             console.log(theHtmlCollection[j].innerText)
             
-            // if the current dom's element's innerHTML length (without spaces) is bigger than 0
-            if(document.getElementsByTagName(currentSelector)[j].innerHTML.replace(/\s+/g, '').length > 0){
-                console.log("   theres some data here boss, we can replace stuff here")
-                console.log("   replaced based on numOfReplacements", numOfReplacements)
-                document.getElementsByTagName(currentSelector)[j].textContent = translatorState["domTranslations"][currentSelector][numOfReplacements][toLanguage]
-                numOfReplacements++
+            // current_element.innerHTML.includes("</") === false && current_element.innerText.length > 0)
+            if(document.getElementsByTagName(currentSelector)[j].innerHTML.includes("</") === false){
+                // if the current dom's element's innerHTML length (without spaces) is bigger than 0
+                if(document.getElementsByTagName(currentSelector)[j].innerHTML.replace(/\s+/g, '').length > 0){
+                    console.log("   theres some data here boss, we can replace stuff here")
+                    console.log("   replaced based on numOfReplacements", numOfReplacements)
+                    // Replace the element with the translation from local storage
+                    document.getElementsByTagName(currentSelector)[j].textContent = "*"+translatorState["domTranslations"][currentSelector][numOfReplacements][toLanguage]
+                    numOfReplacements++
+                }
             }
         }
-
+        console.log("\n")
     }
 
-    console.log("\n")
 }
