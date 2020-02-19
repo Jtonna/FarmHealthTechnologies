@@ -1,4 +1,4 @@
-const selector = ['p', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const selector = ['p', 'a', 'b', 'i', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 // const selector = ['h1', 'h2', 'p',]
 var translatorState = {}
 
@@ -17,8 +17,14 @@ if (localStorage.getItem("translatorState") === null) {
             // Keep track of how many times the forEach calls back(run/loops), & for each run pass the selector, index, language & inner text to the addTranslationToState function; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#Examples
             numCallbackRuns = 0
             theHtmlCollection.forEach(current_element => {
-                addTranslationToState(selector[selector_index], numCallbackRuns, "en", current_element.innerText)
-                numCallbackRuns++
+                // If the elements contains an "</" we know that there is more nested html and we should avoid adding that element
+                // We also check to make sure its not an empty html tag containing nothing, we do this by removind spaces from the innerHTML and checking the length
+                if(current_element.innerHTML.includes("</") === false && current_element.innerHTML.replace(/\s+/g, '').length > 0){
+                    addTranslationToState(selector[selector_index], numCallbackRuns, "en", current_element.innerText)
+                    numCallbackRuns++
+                } else {
+                    console.warn("Skipping adding an element because it has nested html")
+                }
             });
         }
     }
@@ -89,8 +95,6 @@ console.log("\n")
 }
 
 console.log("\nThe Translator State\n",translatorState,"\n\n")
-
-// addTranslationToState("h2", "0", "es", "Hola")
 
 // Sets the translatorState object to local storage
 function setTranslatorState(){
@@ -232,19 +236,39 @@ function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTransla
 
 // Takes in a target language & translates all text content to said language as long as its avaliable in the translatorState object
 function translationTime(toLanguage){
-    // Gets an array of selectors in the domTranslations Object  ex..["h1", "h2", "h3"]
     console.log("requested translation time")
+
+    // Gets an array of selectors in the domTranslations Object  ex..["h1", "h2", "h3"]
     const selectorsInState = Object.keys(translatorState["domTranslations"])
-    // for each selector in translatiorState["domTranslations"] ex.."p{...}, a{...}, h1{...}"
-    for(let i = 0; i < selectorsInState.length; i++){
-        // for each index in the selector ex.."0{...}, 1{...}, 2{...}""
-        console.log(selectorsInState[i])
-        console.log(Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length)
-        for(let j = 0; j < Object.keys(translatorState["domTranslations"][selectorsInState[i]]).length; j++){
-            console.log(translatorState["domTranslations"][selectorsInState[i]][j])
-            document.getElementsByTagName(selectorsInState[i])[j].innerText = translatorState["domTranslations"][selectorsInState[i]][j][toLanguage]
-            //console.log("**", translatorState["domTranslations"][selectorsInState[i]][j][toLanguage])
+    console.log("   Selectors in state", selectorsInState)
+
+    // For each selector
+    for(let i = 0; i<selectorsInState.length; i++){
+        // The current selector we are looping for ex.."h1", or "span" or "p"
+        const currentSelector = selectorsInState[i]
+        // Create an HTMLCollection
+        const theHtmlCollection = document.getElementsByTagName(currentSelector)
+        console.log("The collection", theHtmlCollection)
+        // Number of times we have replaced something
+        let numOfReplacements = 0
+        // For each "selector" on the DOM
+        for(let j = 0; j< theHtmlCollection.length; j++){
+            console.log(currentSelector, i, j)
+            console.log(theHtmlCollection[j].innerText)
+            
+            // current_element.innerHTML.includes("</") === false && current_element.innerText.length > 0)
+            if(document.getElementsByTagName(currentSelector)[j].innerHTML.includes("</") === false){
+                // if the current dom's element's innerHTML length (without spaces) is bigger than 0
+                if(document.getElementsByTagName(currentSelector)[j].innerHTML.replace(/\s+/g, '').length > 0){
+                    console.log("   theres some data here boss, we can replace stuff here")
+                    console.log("   replaced based on numOfReplacements", numOfReplacements)
+                    // Replace the element with the translation from local storage
+                    document.getElementsByTagName(currentSelector)[j].textContent = translatorState["domTranslations"][currentSelector][numOfReplacements][toLanguage]
+                    numOfReplacements++
+                }
+            }
         }
-    console.log("\n")
+        console.log("\n")
     }
+
 }
