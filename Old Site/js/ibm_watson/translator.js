@@ -1,4 +1,4 @@
-const selector = ['p', 'a', 'b', 'i', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const selector = ['p', 'a',]// 'b', 'i', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 var translatorState = {}
 
 // By default the last language is english, if the user has translated before the last language recorded will be used onLoad
@@ -53,7 +53,7 @@ if(localStorage.getItem("lastLanguage") === null){
 
 // This function just adds information to the translatorState Object, inside of the "domTranslations" object.
 // Its important to note, that the "index" is the location on the dom, & that we are using bracket notation to support non-ascii, unlike dot notaiton
-function addTranslationToState(selector, index, language, text) {
+async function addTranslationToState(selector, index, language, text) {
     console.log(`addTranslationToState selector:${selector} index:${index} language:${language} text:${text}`)
 
     if(translatorState.hasOwnProperty("domTranslations") == true && translatorState["domTranslations"].hasOwnProperty(selector) == true && translatorState["domTranslations"][selector].hasOwnProperty(index)){
@@ -238,18 +238,19 @@ function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTransla
     fetch(translatorURL, requestSettings)
         .then(response => response.text())
         .then(result => passTranslationToState(JSON.parse(result)))
+        .then(console.warn("*************"))
         .catch(error => console.log('error', error));
 
     // Now that we have a response that should contain a translator for every selector item, we have to pass each value to the addTranslationToState function
     function passTranslationToState(result){
         // For each object in "translations" from the response pass the data to addTranslationToState
         for(let i = 0; i < result["translations"].length; i++){
+            console.log("were going to pass data to addTranslationToState")
             addTranslationToState(selector, i, toLanguage, result["translations"][i]["translation"])
         }
-        console.log("finished passing data to state")
     }
     // Since the data should have been added we can initiate translationTime
-    translationTime(toLanguage)
+    //translationTime(toLanguage)
 }
 
 // Takes in a target language & translates all text content to said language as long as its avaliable in the translatorState object
@@ -290,3 +291,4 @@ function translationTime(toLanguage){
     }
 
 }
+
