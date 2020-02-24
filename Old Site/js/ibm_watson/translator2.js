@@ -10,8 +10,8 @@
 //     }
 // }
 
-const sampleData1 = {"text": ["This is just a simple test", "[ADULT SWIM]", "WHERES THE OTHER 2", "yeet"], "model_id":"en-es"}
-const sampleData2 = {"text": ["I hope this works", "yes"], "model_id":"en-es"}
+const sampleData1 = ["This is just a simple test", "[ADULT SWIM]", "WHERES THE OTHER 2", "yeet"]
+const sampleData2 = ["I hope this works", "yes"]
 
 function addTranslationToState (x){
     console.log("1. requested to add data to state", x)
@@ -24,7 +24,7 @@ function addTranslationToState (x){
 
 async function watsonIze(dataToTranslate){
 
-    const antiCORS = "https://cors-anywhere.herokuapp.com/"
+    const antiCORS = ""//https://cors-anywhere.herokuapp.com/"
     const translatorURL = antiCORS + "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
 
     // Create headers
@@ -50,6 +50,8 @@ async function watsonIze(dataToTranslate){
         .then(response => response.text())
         .then(console.log("just set response => response.text"))
         .then(result => console.log(JSON.parse(result)))
+        .catch(err => console.log("ERROR:", err))
+    console.log(requestSettings)
 }
 
 async function passToWatson(){
@@ -58,5 +60,6 @@ async function passToWatson(){
         console.log("Passing data to watsonIze")
         await watsonIze(arrayOfSampleData[i])
         console.log("Finished passing it")
+        console.log("\n----\n")
     }
 }
