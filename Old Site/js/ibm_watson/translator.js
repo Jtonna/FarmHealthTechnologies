@@ -53,7 +53,7 @@ if(localStorage.getItem("lastLanguage") === null){
 
 // This function just adds information to the translatorState Object, inside of the "domTranslations" object.
 // Its important to note, that the "index" is the location on the dom, & that we are using bracket notation to support non-ascii, unlike dot notaiton
-async function addTranslationToState(selector, index, language, text) {
+function addTranslationToState(selector, index, language, text) {
     console.log(`addTranslationToState selector:${selector} index:${index} language:${language} text:${text}`)
 
     if(translatorState.hasOwnProperty("domTranslations") == true && translatorState["domTranslations"].hasOwnProperty(selector) == true && translatorState["domTranslations"][selector].hasOwnProperty(index)){
