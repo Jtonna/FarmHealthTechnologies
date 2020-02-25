@@ -211,7 +211,7 @@ async function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToT
     console.log("Begin Watson Translation")
     console.log("   ",fromLanguage+"-"+toLanguage, englishValuesToTranslate, selector)
 
-    const antiCORS = ""//https://cors-anywhere.herokuapp.com/"
+    const antiCORS = "https://cors-anywhere.herokuapp.com/"
     const translatorURL = antiCORS + "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
 
     // Create headers
