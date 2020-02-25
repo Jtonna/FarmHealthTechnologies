@@ -1,4 +1,4 @@
-const selector = ['p', 'a',]// 'b', 'i', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+const selector = ['p', 'a', 'b', 'i', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 var translatorState = {}
 
 // By default the last language is english, if the user has translated before the last language recorded will be used onLoad
@@ -169,7 +169,7 @@ function shouldTranslateChecker(){
 
 // takes in a language & checks the last selector's last index (object) and sees if any of those objects keys are the language the user wants
 // if they arent we have to use api watson, if they are we translate from local storage
-function startTranslation(toLanguage){
+async function startTranslation(toLanguage){
     // Our base language for all translations will be english
     const selectorsInTranslatorState = Object.keys(translatorState["domTranslations"])
     console.log("The selectors Avaliable", selectorsInTranslatorState)
@@ -200,15 +200,16 @@ function startTranslation(toLanguage){
 
         // Now that every value should be in the array, we can pass the information to the begin watson translation function
         console.log(englishValuesToTranslate)
-        beginWatsonTranslation("en", toLanguage, englishValuesToTranslate, currentSelector)
+        await beginWatsonTranslation("en", toLanguage, englishValuesToTranslate, currentSelector)
         console.log("\n")
     }
+    await translationTime(toLanguage)
 }
 
 // Takes in from-to languages, an array of data to translate and a selector
 // Passes that data to the watson API and then parses the response and sends values 1 by 1 to addTranslationToState
 // Finally initializes translationTime to translate the data that was just added.
-function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTranslate, selector){
+async function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTranslate, selector){
     console.log("Begin Watson Translation")
     console.log("   ",fromLanguage+"-"+toLanguage, englishValuesToTranslate, selector)
 
@@ -235,7 +236,7 @@ function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToTransla
     }
 
     // Fetch
-    fetch(translatorURL, requestSettings)
+    await fetch(translatorURL, requestSettings)
         .then(response => response.text())
         .then(result => passTranslationToState(JSON.parse(result)))
         .then(console.warn("*************"))
