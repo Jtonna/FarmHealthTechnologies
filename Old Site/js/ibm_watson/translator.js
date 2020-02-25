@@ -25,7 +25,7 @@ if (localStorage.getItem("translatorState") === null) {
                     addTranslationToState(selector[selector_index], numCallbackRuns, "en", current_element.innerText)
                     numCallbackRuns++
                 } else {
-                    console.warn("Skipping adding an element because it has nested html")
+                    console.warn("skipping adding domElement", selector[selector_index], numCallbackRuns," because it has nested html\n\n")
                 }
             });
         }
@@ -34,7 +34,7 @@ if (localStorage.getItem("translatorState") === null) {
     // Now that we are finished adding the dom elements to the state we need to save it to localStorage
     setTranslatorState()
 } else {
-    console.warn("user has a translator state, so we are going to set it")
+    console.log("User has a translator state, so we are going to set it")
     translatorState = getTranslatorState()
 }
 
@@ -43,10 +43,11 @@ if(localStorage.getItem("lastLanguage") === null){
     localStorage.setItem("lastLanguage", lastLanguage)
 } else {
     lastLanguage = localStorage.getItem("lastLanguage")
-    console.warn("Loading Last Language from LocalStorage: ", lastLanguage)
+    console.log("Loading Last Language from LocalStorage: ", lastLanguage)
 
     // If the last language is not english, we will do the user a favor and translate
     if(lastLanguage !== "en"){
+        console.log("Users last language is NOT english, we are going to automatically translate the page using data from Local Storage")
         translationTime(lastLanguage)
     }
 }
@@ -54,20 +55,18 @@ if(localStorage.getItem("lastLanguage") === null){
 // This function just adds information to the translatorState Object, inside of the "domTranslations" object.
 // Its important to note, that the "index" is the location on the dom, & that we are using bracket notation to support non-ascii, unlike dot notaiton
 function addTranslationToState(selector, index, language, text) {
-    console.log(`addTranslationToState selector:${selector} index:${index} language:${language} text:${text}`)
+    console.log(`addTranslationToState || ${selector}:{${index}:{ ${language}:${text.substr(0, 18)}... }}`)
 
     if(translatorState.hasOwnProperty("domTranslations") == true && translatorState["domTranslations"].hasOwnProperty(selector) == true && translatorState["domTranslations"][selector].hasOwnProperty(index)){
-        console.log("   looks like we can just add the data and not worry about a structure")
-
         // this data structure should only contain the index:{language:text}, where "index" referes to its position on the dom
         const tempDataStructure = {
             [language]:text
         }
-        console.log("Adding Data To State", tempDataStructure)
+        console.log("adding translation To state", tempDataStructure)
         helper(translatorState["domTranslations"][selector][index], tempDataStructure)
 
         // Now that all the translations shold be done, we need to save the translation to state
-        console.warn("attempting to save translator state")
+        console.log("calling setTranslatorState")
         setTranslatorState()
 
     } else {
@@ -97,30 +96,28 @@ function addTranslationToState(selector, index, language, text) {
 
         // since the selector:{index:{language:text}} just passed through, we created space for it to be added, but did not actually add it
         // we can just recursively pass the data back in to be added
-        console.log(`   Just created data structures, now were going to do some recursion for ${selector}/${index}`)
+        console.log(`   Just created data structure for ${selector}{${index}: {...} }, passing data back in recursively to be added to state.`)
         addTranslationToState(selector, index, language, text)
         
     }
 
     function helper(objectLocation, objectToMerge){
-        console.log("Assigning data to the translatorState", objectToMerge)
+        console.log("Merging temp object wiht translator state object", objectToMerge)
         Object.assign(objectLocation, objectToMerge)
     }
 console.log("\n")
 }
 
-console.log("\nThe Translator State\n",translatorState,"\n\n")
-
 // Sets the translatorState object to local storage
 function setTranslatorState(){
-    console.log("saving StranslatorState to localStorage")
+    console.warn("saving translatorState to localStorage")
     localStorage.setItem("translatorState", JSON.stringify(translatorState))
 }
 
 // Gets the translatorState object from local storage
 function getTranslatorState(){
-    console.log("attempting to get item from local storage")
-    console.log("here it is", JSON.parse(localStorage.getItem("translatorState")))
+    console.log("attempting to get translatorState{...} from local storage")
+    console.log(JSON.parse(localStorage.getItem("translatorState")))
     const translatorStateFromLocalStorage = JSON.parse(localStorage.getItem("translatorState"))
     return translatorStateFromLocalStorage
 }
@@ -203,6 +200,7 @@ async function startTranslation(toLanguage){
         await beginWatsonTranslation("en", toLanguage, englishValuesToTranslate, currentSelector)
         console.log("\n")
     }
+    console.warn("Starting translationTime()")
     await translationTime(toLanguage)
 }
 
@@ -213,7 +211,7 @@ async function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToT
     console.log("Begin Watson Translation")
     console.log("   ",fromLanguage+"-"+toLanguage, englishValuesToTranslate, selector)
 
-    const antiCORS = "https://cors-anywhere.herokuapp.com/"
+    const antiCORS = ""//https://cors-anywhere.herokuapp.com/"
     const translatorURL = antiCORS + "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/cbdbacd8-8bbf-4f18-a326-a2e22332bb49/v3/translate?version=2018-05-01"
 
     // Create headers
@@ -239,7 +237,6 @@ async function beginWatsonTranslation(fromLanguage, toLanguage, englishValuesToT
     await fetch(translatorURL, requestSettings)
         .then(response => response.text())
         .then(result => passTranslationToState(JSON.parse(result)))
-        .then(console.warn("*************"))
         .catch(error => console.log('error', error));
 
     // Now that we have a response that should contain a translator for every selector item, we have to pass each value to the addTranslationToState function
@@ -268,20 +265,16 @@ function translationTime(toLanguage){
         const currentSelector = selectorsInState[i]
         // Create an HTMLCollection
         const theHtmlCollection = document.getElementsByTagName(currentSelector)
-        console.log("The collection", theHtmlCollection)
+        console.log("theHtmlCollection is", theHtmlCollection)
         // Number of times we have replaced something
         let numOfReplacements = 0
         // For each "selector" on the DOM
-        for(let j = 0; j< theHtmlCollection.length; j++){
-            console.log(currentSelector, i, j)
-            console.log(theHtmlCollection[j].innerText)
-            
+        for(let j = 0; j< theHtmlCollection.length; j++){            
             // current_element.innerHTML.includes("</") === false && current_element.innerText.length > 0)
             if(document.getElementsByTagName(currentSelector)[j].innerHTML.includes("</") === false){
                 // if the current dom's element's innerHTML length (without spaces) is bigger than 0
                 if(document.getElementsByTagName(currentSelector)[j].innerHTML.replace(/\s+/g, '').length > 0){
-                    console.log("   theres some data here boss, we can replace stuff here")
-                    console.log("   replaced based on numOfReplacements", numOfReplacements)
+                    console.log("   replacing dom element", currentSelector," using connstraints, where the index is", numOfReplacements)
                     // Replace the element with the translation from local storage
                     document.getElementsByTagName(currentSelector)[j].textContent = translatorState["domTranslations"][currentSelector][numOfReplacements][toLanguage]
                     numOfReplacements++
